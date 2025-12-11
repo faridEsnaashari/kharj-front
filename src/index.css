@@ -1,0 +1,146 @@
+/* src/index.css */
+body {
+  font-family: Arial, sans-serif;
+  margin: 1rem;
+  background-color: #f4f7f9;
+  color: #333;
+}
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1rem;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+h2 {
+  color: #0056b3;
+}
+/* Hamburger menu styles */
+.menu-toggle {
+  font-size: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  color: #0056b3;
+}
+.menu-dropdown {
+  display: none;
+  flex-direction: column;
+  background-color: #f0f0f0;
+  position: absolute;
+  top: 50px;
+  left: 10px;
+  z-index: 10;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+.menu-dropdown button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background-color: white;
+  text-align: left;
+  cursor: pointer;
+  color: #0056b3;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+.menu-dropdown button:hover {
+  background-color: #e2e6ea;
+}
+/* Tabs container */
+.tab-content {
+  margin-top: 1rem;
+}
+/* Hide tabs by default */
+.tab {
+  display: none;
+  padding: 1.5rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+}
+.tab.active {
+  display: block;
+}
+label {
+  display: block;
+  margin: 0.75rem 0 0.25rem;
+  font-weight: bold;
+  color: #555;
+}
+input[type='text'],
+input[type='password'],
+input[type='number'],
+select {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+button.submit-btn {
+  margin-top: 1.5rem;
+  padding: 10px 20px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: background-color 0.2s ease;
+}
+button.submit-btn:hover {
+  background-color: #0056b3;
+}
+#result,
+.result-box {
+  margin-top: 1rem;
+  white-space: pre-wrap;
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  padding: 15px;
+  max-height: 300px;
+  overflow-y: auto;
+  border-radius: 8px;
+  font-family: 'Courier New', Courier, monospace;
+  color: #333;
+}
+#signin-result {
+  color: #d9534f;
+  font-weight: bold;
+  margin-top: 0.5rem;
+}
+/* Responsive adjustments */
+@media (min-width: 600px) {
+  .menu-dropdown {
+    position: static;
+    display: flex !important;
+    flex-direction: row;
+    background: none;
+    box-shadow: none;
+    justify-content: space-around;
+    padding: 0;
+  }
+  .menu-dropdown button {
+    background: none;
+    color: black;
+    padding: 12px;
+    border: none;
+    font-weight: normal;
+    border-bottom: 2px solid transparent;
+    transition: border-bottom 0.2s ease;
+  }
+  .menu-dropdown button.active {
+    border-bottom: 2px solid #0056b3;
+    font-weight: bold;
+  }
+  .menu-toggle {
+    display: none;
+  }
+  .tab-content {
+    margin-top: 2rem;
+  }
+}
