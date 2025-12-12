@@ -29,4 +29,5 @@ jobs:
 
             npm install
             npm run build
+            rm -rf ../refKharj/front/dist
             cp -rv dist ../refKharj/front
