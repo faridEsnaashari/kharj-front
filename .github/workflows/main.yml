@@ -23,6 +23,8 @@ jobs:
             git checkout main
             git pull origin main
 
+            rm -rf .env
+
             cat > .env <<EOF
             VITE_API_BASE_URL=http://194.60.230.197:3005
             EOF
