@@ -1,12 +1,17 @@
-// src/components/PaymentTab.jsx
-
 import React, { useState } from 'react';
 import { BASEURL, bankMapper, categoryMapper, createSelectOptions } from '../utils/api';
+
+import JalaliDateInput from './JalaliDateInput'; 
+import { date} from '../utils/date';
 
 const bankOptions = createSelectOptions(bankMapper);
 const categoryOptions = createSelectOptions(categoryMapper);
 
 const PaymentTab = ({ token, relatedUsers }) => {
+  const getInitialJalaliDate = () => {
+    return date().calendar("jalali").format("YYYY-MM-DD HH:mm:ss");
+  };
+
   const [form, setForm] = useState({
     owner: relatedUsers.length > 0 ? relatedUsers[0].id : '',
     price: '',
@@ -15,20 +20,26 @@ const PaymentTab = ({ token, relatedUsers }) => {
     description: '',
     isFun: '0', 
     isMaman: '0',
+    paidAtDate: getInitialJalaliDate(), 
   });
   const [result, setResult] = useState('');
 
   const handleChange = (e) => {
-    // Determine the key based on the element's ID, extracting the value after 'payment-'
     const key = e.target.id.replace('payment-', '');
     setForm({ ...form, [key]: e.target.value });
   };
+  
+  // Handler to capture the date change from the reusable component
+  const handleDateChange = (newDateString) => {
+    setForm(prevForm => ({ ...prevForm, paidAtDate: newDateString }));
+  };
+
 
   const handleSubmit = async () => {
-    const { owner, price, bank, category, description, isFun, isMaman } = form;
+    const { owner, price, bank, category, description, paidAtDate } = form;
     
-    if (!price || !bank || !category || !description || !owner) {
-      setResult('Please fill all fields.');
+    if (!price || !bank || !category || !owner || !paidAtDate) {
+      setResult('Please fill all required fields.');
       return;
     }
 
@@ -37,9 +48,10 @@ const PaymentTab = ({ token, relatedUsers }) => {
       bank,
       category,
       description,
-      isFun: isFun === '1', 
-      isMaman: isMaman === '1', 
+      isFun: false, 
+      isMaman: false, 
       ownerId: Number(owner),
+      paidAt: date(paidAtDate,{jalali:true}).format("YYYY-MM-DD HH:mm:ss"), 
     };
 
     try {
@@ -62,6 +74,7 @@ const PaymentTab = ({ token, relatedUsers }) => {
   return (
     <>
       <h3>Payment</h3>
+      
       <label>
         Owner:
         <select id="payment-owner" value={form.owner} onChange={handleChange}>
@@ -83,6 +96,12 @@ const PaymentTab = ({ token, relatedUsers }) => {
           onChange={handleChange} 
         />
       </label>
+
+      <JalaliDateInput
+        label="Paid At (Jalali)"
+        onDateChange={handleDateChange}
+        initialJalaliDate={form.paidAtDate}
+      />
       
       <label>
         Bank:
@@ -106,22 +125,6 @@ const PaymentTab = ({ token, relatedUsers }) => {
           value={form.description} 
           onChange={handleChange} 
         />
-      </label>
-      
-      <label>
-        Is Fun:
-        <select id="payment-isFun" value={form.isFun} onChange={handleChange}>
-          <option value="0">No</option>
-          <option value="1">Yes</option>
-        </select>
-      </label>
-      
-      <label>
-        Is Maman:
-        <select id="payment-isMaman" value={form.isMaman} onChange={handleChange}>
-          <option value="0">No</option>
-          <option value="1">Yes</option>
-        </select>
       </label>
       
       <button className="submit-btn" id="payment-submit" onClick={handleSubmit}>
