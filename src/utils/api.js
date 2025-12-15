@@ -30,6 +30,7 @@ export const categoryMapper = {
   n: 'NEMIDOONAM',
   cw: 'COWORK',
   bd: 'BEDEHI',
+  hl: 'HALEHOOLE',
 };
 
 export const incomeCategoryMapper = {
