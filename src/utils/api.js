@@ -31,6 +31,7 @@ export const categoryMapper = {
   cw: 'COWORK',
   bd: 'BEDEHI',
   hl: 'HALEHOOLE',
+  b: 'BANK',
 };
 
 export const incomeCategoryMapper = {
@@ -43,7 +44,7 @@ export const incomeCategoryMapper = {
 
 // Helper function to create option list from mappers
 export const createSelectOptions = (mapper) => {
-    return Object.entries(mapper).map(([key, value]) => ({
+    return Object.entries(mapper).map(([, value]) => ({
         value: value,
         label: value,
     }));
