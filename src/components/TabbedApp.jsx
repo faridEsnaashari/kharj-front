@@ -6,12 +6,16 @@ import PaymentTab from './PaymentTab';
 import AccountTab from './AccountTab';
 import IncomeTab from './IncomeTab';
 import ExchangeTab from './ExchangeTab';
+import UncompletePayment from './UncompletePaymentTab';
+import Text from './Text';
 
 const tabMapping = {
   payment: 'Payment',
   account: 'Create Account',
   incomes: 'Incomes',
   exchange: 'Exchange',
+  uncompletePayment: 'UncompletePayment',
+  text: 'Text',
 };
 
 const TabbedApp = ({ token }) => {
@@ -66,6 +70,10 @@ const TabbedApp = ({ token }) => {
         return <IncomeTab {...commonProps} />;
       case 'exchange':
         return <ExchangeTab {...commonProps} />;
+      case 'uncompletePayment':
+        return <UncompletePayment {...commonProps} />;
+      case 'text':
+        return <Text {...commonProps} />;
       default:
         return null;
     }
