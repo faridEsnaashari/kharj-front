@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { BASEURL, bankMapper, categoryMapper, createSelectOptions } from '../utils/api';
 import JalaliDateInput from './JalaliDateInput'; 
 import { date } from '../utils/date';
@@ -171,6 +171,8 @@ const UncompletePaymentTab = ({ token, relatedUsers }) => {
                 <strong>{item.amount.toLocaleString()} Tomans</strong>
                 <p style={{ fontSize: '12px', color: '#555', margin: '4px 0' }}>{item.description}</p>
                 <small>Bank Date: {date(item.paidAt).calendar("jalali").format("YYYY/MM/DD HH:mm")}</small>
+                <div></div>
+                <small>day: {date(item.paidAt).calendar("jalali").locale("fa").format("dddd, MMMM")}</small>
               </div>
               <button onClick={() => handleProcess(item)}>
                 {editingId === item.id ? 'Close' : 'Process'}
