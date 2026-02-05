@@ -173,6 +173,8 @@ const UncompletePaymentTab = ({ token, relatedUsers }) => {
                 <small>Bank Date: {date(item.paidAt).calendar("jalali").format("YYYY/MM/DD HH:mm")}</small>
                 <div></div>
                 <small>day: {date(item.paidAt).calendar("jalali").locale("fa").format("dddd, MMMM")}</small>
+                <div></div>
+                <small>remain: {item.remain}</small>
               </div>
               <button onClick={() => handleProcess(item)}>
                 {editingId === item.id ? 'Close' : 'Process'}
