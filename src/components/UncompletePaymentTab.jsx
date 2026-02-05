@@ -72,7 +72,7 @@ const UncompletePaymentTab = ({ token, relatedUsers }) => {
       ...form,
       price: item.amount || '',
       bank: filters.bank,
-      description: item.description || '',
+      description:  '',
       paidAtDate: initialJalali
     });
   };
@@ -192,6 +192,9 @@ const UncompletePaymentTab = ({ token, relatedUsers }) => {
                   <select id="un-payment-category" value={form.category} onChange={handleFormChange}>
                     {categoryOptions.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
                   </select>
+                </label>
+                <label>Description: 
+                  <input type="text" id="un-payment-description" value={form.description} onChange={handleFormChange} />
                 </label>
                 <label>Owner:
                   <select id="un-payment-owner" value={form.owner} onChange={handleFormChange}>
