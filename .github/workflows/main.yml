@@ -29,7 +29,6 @@ jobs:
             VITE_API_BASE_URL=http://194.60.230.197:3005
             EOF
 
-            npm install
             npm run build
             rm -rf ../refKharj/front/dist
             cp -rv dist ../refKharj/front
