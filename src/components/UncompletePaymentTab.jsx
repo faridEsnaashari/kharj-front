@@ -39,7 +39,8 @@ const UncompletePaymentTab = ({ token, relatedUsers }) => {
       const json = await res.json();
       
       if (json.success) {
-        setUncompletes(json.data.rows);
+
+        setUncompletes(json.data.rows.map(r=>({...r,paidAt:r.paidAt.slice(0,19)})));
         setTotal(json.data.paginationData.total);
         setResult(`Showing ${json.data.rows.length} of ${json.data.paginationData.total} items.`);
       } else {
