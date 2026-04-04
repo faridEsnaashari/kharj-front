@@ -1,4 +1,13 @@
-export const BASEURL = import.meta.env.VITE_API_BASE_URL||"http://localhost:3005";
+export const BASEURL = import.meta.env.VITE_API_BASE_URL||`http://${document.URL.split("//")[1].split("/")[0]}`;
+
+export const unitMapper = {
+  rl:"RIAL",
+
+  dl: 'DOLAR',
+  eu:  'EUR',
+  tlg: 'TALA_GERAM',
+  tlr:'TALA_ROB',
+};
 
 export const bankMapper = {
   rs: 'RESALAT',
@@ -10,6 +19,7 @@ export const bankMapper = {
   bp: 'BITPIN',
   nb: 'NOBITEX',
   dg: 'DIGIPAY',
+  gn:"GENERAL",
 };
 
 export const categoryMapper = {
@@ -40,6 +50,7 @@ export const incomeCategoryMapper = {
   bd: 'BEDEHI',
   vm: 'LOAN',
   sp: 'SNAPP',
+  sm: "MS"
 };
 
 // Helper function to create option list from mappers

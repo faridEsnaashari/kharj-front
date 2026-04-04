@@ -6,7 +6,7 @@ import PaymentTab from './PaymentTab';
 import AccountTab from './AccountTab';
 import IncomeTab from './IncomeTab';
 import ExchangeTab from './ExchangeTab';
-import UncompletePayment from './UncompletePaymentTab';
+import UncompletePayment from './Uncomplete/UncompletePaymentTab';
 import Text from './Text';
 
 const tabMapping = {

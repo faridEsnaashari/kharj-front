@@ -1,14 +1,19 @@
 // src/components/IncomeTab.jsx
 
 import React, { useState } from 'react';
+import JalaliDateInput from './JalaliDateInput'; 
+import { date} from '../utils/date';
+
 import { 
   BASEURL, 
   bankMapper, 
   incomeCategoryMapper, 
-  createSelectOptions 
+  createSelectOptions, 
+  unitMapper
 } from '../utils/api';
 
 const bankOptions = createSelectOptions(bankMapper);
+const unitOptions = createSelectOptions(unitMapper);
 const incomeCategoryOptions = createSelectOptions(incomeCategoryMapper);
 
 const IncomeTab = ({ token, relatedUsers }) => {
@@ -18,20 +23,16 @@ const IncomeTab = ({ token, relatedUsers }) => {
     description: '',
     category: incomeCategoryOptions[0]?.value || '',
     bank: bankOptions[0]?.value || '',
+    unit:unitOptions[0]?.value || "",
+    paidAtDate: date().calendar("jalali").format("YYYY-MM-DD HH:mm:ss"), 
   });
   const [result, setResult] = useState('');
 
-  const handleChange = (e) => {
-    const key = e.target.id.replace('income-', '');
-    // Handle the specific ID mapping for ballance/amount
-    const formKey = key === 'ballance' ? 'ballance' : key;
-    setForm({ ...form, [formKey]: e.target.value });
-  };
-
   const handleSubmit = async () => {
-    const { user, ballance, description, category, bank } = form;
 
-    if (!user || !ballance || !description || !category || !bank) {
+    const { user, ballance, description, category, bank, paidAtDate, unit } = form;
+
+    if (!user || !ballance || !description || !category || !bank|| !paidAtDate || !unit) {
       setResult('Please fill all fields.');
       return;
     }
@@ -41,8 +42,9 @@ const IncomeTab = ({ token, relatedUsers }) => {
       ownedBy: Number(user),
       amount: Number(ballance), // The API expects 'amount' based on the original JS submit logic
       bank,
+      unit,
       category,
-      priority: 1, // Fixed priority value from original JS
+      paidAt: date(paidAtDate,{jalali:true}).format("YYYY-MM-DD HH:mm:ss"), 
     };
 
     try {
@@ -68,7 +70,11 @@ const IncomeTab = ({ token, relatedUsers }) => {
       
       <label>
         User:
-        <select id="income-user" value={form.user} onChange={handleChange}>
+        <select 
+          id="income-user" 
+          value={form.user}
+          onChange={(e)=>setForm({...form,user:e.target.value})} 
+        >
           {relatedUsers.map((user) => (
             <option key={user.id} value={user.id}>
               {user.name}
@@ -84,9 +90,14 @@ const IncomeTab = ({ token, relatedUsers }) => {
           id="income-ballance" 
           min="0" 
           value={form.ballance} 
-          onChange={handleChange} 
+          onChange={(e)=>setForm({...form,ballance:e.target.value})} 
         />
       </label>
+                <JalaliDateInput
+                  label="Date"
+                  onDateChange={(val) => setForm({ ...form, paidAtDate: val })}
+                  initialJalaliDate={form.paidAtDate}
+                />
       
       <label>
         Description:
@@ -94,21 +105,40 @@ const IncomeTab = ({ token, relatedUsers }) => {
           type="text" 
           id="income-description" 
           value={form.description} 
-          onChange={handleChange} 
+          onChange={(e)=>setForm({...form,description:e.target.value})} 
         />
       </label>
       
       <label>
         Category:
-        <select id="income-category" value={form.category} onChange={handleChange}>
+        <select 
+          id="income-category" 
+          value={form.category} 
+          onChange={(e)=>setForm({...form,category:e.target.value})} 
+        >
           {incomeCategoryOptions.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
         </select>
       </label>
       
       <label>
         Bank:
-        <select id="income-bank" value={form.bank} onChange={handleChange}>
+        <select 
+          id="income-bank" 
+          value={form.bank} 
+          onChange={(e)=>setForm({...form,bank:e.target.value})} 
+        >
           {bankOptions.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
+        </select>
+      </label>
+
+      <label>
+        Unit:
+        <select 
+          id="income-bank" 
+          value={form.unit} 
+          onChange={(e)=>setForm({...form,unit:e.target.value})} 
+        >
+          {unitOptions.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
         </select>
       </label>
       
