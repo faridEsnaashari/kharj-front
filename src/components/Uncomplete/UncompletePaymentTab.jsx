@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
-import { BASEURL, bankMapper, categoryMapper, createSelectOptions } from '../utils/api';
-import JalaliDateInput from './JalaliDateInput'; 
-import { date } from '../utils/date';
+import { BASEURL, bankMapper, categoryMapper, createSelectOptions, incomeCategoryMapper, unitMapper } from '../../utils/api';
+import { date } from '../../utils/date';
+import PaymentComponent from './PaymentComponent';
+import IncomeComponent from './IncomeComponent';
 
 const bankOptions = createSelectOptions(bankMapper);
 const categoryOptions = createSelectOptions(categoryMapper);
+const incomeCategoryOptions = createSelectOptions(incomeCategoryMapper);
+const unitOptions = createSelectOptions(unitMapper);
 
 const UncompletePaymentTab = ({ token, relatedUsers }) => {
   const [uncompletes, setUncompletes] = useState([]);
@@ -33,7 +36,7 @@ const UncompletePaymentTab = ({ token, relatedUsers }) => {
     setLoading(true);
     try {
       const query = new URLSearchParams(filters).toString();
-      const res = await fetch(`${BASEURL}/payment/uncompeletes?${query}`, {
+      const res = await fetch(`${BASEURL}/uncomplete-payments?${query}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const json = await res.json();
@@ -63,6 +66,26 @@ const UncompletePaymentTab = ({ token, relatedUsers }) => {
     }));
   };
 
+  const deleteItem = async(uncompleteId) => {
+
+    try {
+      setResult('Submitting...');
+      const res = await fetch(`${BASEURL}/uncomplete-payments/${uncompleteId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const json = await res.json();
+      setResult('Success: ' + json.message);
+      setEditingId(null);
+      fetchUncompletes(); 
+    } catch (e) {
+      setResult('Submit Error: ' + e.message);
+    }
+  };
+
   const handleProcess = (item) => {
     const initialJalali = item.paidAt 
       ? date(item.paidAt).calendar("jalali").format("YYYY-MM-DD HH:mm:ss")
@@ -74,17 +97,48 @@ const UncompletePaymentTab = ({ token, relatedUsers }) => {
       price: item.amount || '',
       bank: filters.bank,
       description:  '',
-      paidAtDate: initialJalali
+      paidAtDate: initialJalali,
+      category: item.type==="PAYMENT"?categoryOptions[0]?.value :incomeCategoryOptions[0].value,
+      unit: unitOptions[0]?.value 
     });
   };
 
-  const handleFormChange = (e) => {
-    const key = e.target.id.replace('un-payment-', '');
-    setForm({ ...form, [key]: e.target.value });
+  const handleIncomeSubmit = async (uncompleteId) => {
+    const { owner, price, bank, category, description, paidAtDate, unit } = form;
+
+    const body = {
+      amount: Number(price),
+      bank,
+      category,
+      description,
+      userId: Number(owner),
+      paidAt: date(paidAtDate, { jalali: true }).format("YYYY-MM-DD HH:mm:ss"),
+      uncompletePaymentId: uncompleteId, 
+      unit,
+    };
+
+    try {
+      setResult('Submitting...');
+      const res = await fetch(`${BASEURL}/income`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(body),
+      });
+      const json = await res.json();
+      setResult('Success: ' + json.message);
+      setEditingId(null);
+      fetchUncompletes(); 
+    } catch (e) {
+      setResult('Submit Error: ' + e.message);
+    }
   };
 
   const handleSubmit = async (uncompleteId) => {
-    const { owner, price, bank, category, description, paidAtDate } = form;
+
+    const { owner, price, bank, category, description, paidAtDate, unit } = form;
 
     const body = {
       price: Number(price),
@@ -95,7 +149,8 @@ const UncompletePaymentTab = ({ token, relatedUsers }) => {
       isMaman: false,
       ownerId: Number(owner),
       paidAt: date(paidAtDate, { jalali: true }).format("YYYY-MM-DD HH:mm:ss"),
-      uncompeletePaymentId: uncompleteId, 
+      uncompletePaymentId: uncompleteId, 
+      unit,
     };
 
     try {
@@ -177,35 +232,43 @@ const UncompletePaymentTab = ({ token, relatedUsers }) => {
                 <div></div>
                 <small>remain: {item.remain}</small>
               </div>
-              <button onClick={() => handleProcess(item)}>
-                {editingId === item.id ? 'Close' : 'Process'}
-              </button>
-            </div>
 
-            {editingId === item.id && (
-              <div className="form-overlay" style={{ marginTop: '15px', padding: '10px', background: '#f0f0f0' }}>
-                {/* Form fields same as before... */}
-                <label>Price: <input type="number" id="un-payment-price" value={form.price} onChange={handleFormChange} /></label>
-                <JalaliDateInput
-                  label="Date"
-                  onDateChange={(val) => setForm({...form, paidAtDate: val})}
-                  initialJalaliDate={form.paidAtDate}
-                />
-                <label>Category:
-                  <select id="un-payment-category" value={form.category} onChange={handleFormChange}>
-                    {categoryOptions.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
-                  </select>
-                </label>
-                <label>Description: 
-                  <input type="text" id="un-payment-description" value={form.description} onChange={handleFormChange} />
-                </label>
-                <label>Owner:
-                  <select id="un-payment-owner" value={form.owner} onChange={handleFormChange}>
-                    {relatedUsers.map(u => <option key={u.id} value={u.id}>{u.name}</option>)}
-                  </select>
-                </label>
-                <button className="submit-btn" onClick={() => handleSubmit(item.id)}>Confirm & Submit</button>
+              {editingId!==item.id&&
+              <button onClick={() => handleProcess(item)}>
+                Open
+              </button>
+              }
+
+                {editingId === item.id && 
+                    <button onClick={() => deleteItem(item.id)}>
+                    Delete
+                  </button>
+                }
+                
               </div>
+
+            {editingId === item.id && item.type==="PAYMENT"&&(
+              <PaymentComponent
+                setForm={setForm} 
+                form={form}
+                relatedUsers={relatedUsers}
+                categoryOptions={categoryOptions}
+                unitOptions={unitOptions}
+                id={item.id}
+                handleSubmit={handleSubmit}
+              />
+            )}
+
+            {editingId === item.id && item.type==="INCOME"&&(
+              <IncomeComponent
+                setForm={setForm} 
+                form={form}
+                relatedUsers={relatedUsers}
+                categoryOptions={incomeCategoryOptions}
+                unitOptions={unitOptions}
+                id={item.id}
+                handleSubmit={handleIncomeSubmit}
+              />
             )}
           </div>
         ))}

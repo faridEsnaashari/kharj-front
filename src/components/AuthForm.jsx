@@ -34,7 +34,7 @@ const AuthForm = ({ onSignInSuccess }) => {
       onSignInSuccess(token);
       
     } catch (e) {
-      setMessage('Sign-in failed: ' + e.message);
+      setMessage('Sign-in failed: ' + document.URL+","+BASEURL);
     }
   };
 

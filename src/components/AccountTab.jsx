@@ -1,29 +1,25 @@
 // src/components/AccountTab.jsx
 
 import React, { useState } from 'react';
-import { BASEURL, bankMapper, createSelectOptions } from '../utils/api';
+import { BASEURL, unitMapper, bankMapper, createSelectOptions } from '../utils/api';
 
 const bankOptions = createSelectOptions(bankMapper);
+const unitOptions = createSelectOptions(unitMapper);
 
 const AccountTab = ({ token, relatedUsers }) => {
   const [form, setForm] = useState({
     ballance: '',
     ownedBy: relatedUsers.length > 0 ? relatedUsers[0].id : '',
     bank: bankOptions[0]?.value || '',
+    unit: unitOptions[0]?.value || '',
     priority: '',
   });
   const [result, setResult] = useState('');
 
-  const handleChange = (e) => {
-    // Determine the key based on the element's ID, extracting the value after 'account-'
-    const key = e.target.id.replace('account-', '');
-    setForm({ ...form, [key]: e.target.value });
-  };
-
   const handleSubmit = async () => {
-    const { ballance, ownedBy, bank, priority } = form;
+    const { ballance, ownedBy, bank, priority, unit } = form;
 
-    if (!ballance || !ownedBy || !bank || !priority) {
+    if (!ballance || !ownedBy || !bank || !priority || !unit) {
       setResult('Please fill all fields.');
       return;
     }
@@ -34,6 +30,7 @@ const AccountTab = ({ token, relatedUsers }) => {
       ballance: Number(ballance),
       bank,
       priority: Number(priority),
+      unit
     };
 
     try {
@@ -64,13 +61,17 @@ const AccountTab = ({ token, relatedUsers }) => {
           id="account-ballance" 
           min="0" 
           value={form.ballance} 
-          onChange={handleChange} 
+          onChange={e=>setForm({...form,ballance:e.target.value})} 
         />
       </label>
       
       <label>
         Owned By:
-        <select id="account-ownedBy" value={form.ownedBy} onChange={handleChange}>
+        <select 
+          id="account-ownedBy"
+          value={form.ownedBy}
+           onChange={e=>setForm({...form,ownedBy:e.target.value})} 
+        >
           {relatedUsers.map((user) => (
             <option key={user.id} value={user.id}>
               {user.name}
@@ -81,8 +82,23 @@ const AccountTab = ({ token, relatedUsers }) => {
       
       <label>
         Bank:
-        <select id="account-bank" value={form.bank} onChange={handleChange}>
+        <select 
+          id="account-bank"
+          value={form.bank}
+          onChange={e=>setForm({...form,bank:e.target.value})} 
+        >
           {bankOptions.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
+        </select>
+      </label>
+      
+      <label>
+        Unit:
+        <select 
+          id="account-bank"
+          value={form.unit}
+          onChange={e=>setForm({...form,unit:e.target.value})} 
+        >
+          {unitOptions.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
         </select>
       </label>
       
@@ -93,7 +109,7 @@ const AccountTab = ({ token, relatedUsers }) => {
           id="account-priority" 
           min="0" 
           value={form.priority} 
-          onChange={handleChange} 
+          onChange={e=>setForm({...form,priority:e.target.value})} 
         />
       </label>
       
