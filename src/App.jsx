@@ -1,28 +1,47 @@
-// src/App.jsx
-
 import React, { useState } from 'react';
-import AuthForm from './components/AuthForm';
-import TabbedApp from './components/TabbedApp';
-import ClearStorageButton from './components/ClearStorageButton';
-import {getToken} from './components/auth-token.logic';
+import { Signin, Signup, AUTH_STATES } from './features/auth';
+import { isAuthenticated } from './features/auth/api/api.config';
+import './App.css';
 
-const App = () => {
-  // Initialize token from localStorage
-  const [token, setToken] = useState(getToken());
-  
-  const handleSignInSuccess = (newToken) => {
-    setToken(newToken);
+function App() {
+  const [authState, setAuthState] = useState(() =>
+    isAuthenticated() ? AUTH_STATES.AUTHENTICATED : AUTH_STATES.SIGNIN
+  );
+
+  const handleSigninSuccess = () => {
+    setAuthState(AUTH_STATES.AUTHENTICATED);
   };
 
-  return (
-    <div className="container">
-      <h2>API Tester</h2>
+  const handleSignupSuccess = () => {
+    setAuthState(AUTH_STATES.SIGNIN);
+  };
 
-      <ClearStorageButton />
+  if (authState === AUTH_STATES.AUTHENTICATED) {
+    return (
+      <div className="app-root">
+        <div style={{ textAlign: 'center', padding: '40px' }}>
+          <h1>Welcome to Kharj! 🎉</h1>
+          <p>Main app content will go here</p>
+          <button onClick={() => {
+            localStorage.removeItem('authToken');
+            setAuthState(AUTH_STATES.SIGNIN);
+          }}>
+            Logout
+          </button>
+        </div>
+      </div>
+    );
+  }
 
-      {token ? ( <TabbedApp token={token} />) : ( <AuthForm onSignInSuccess={handleSignInSuccess} />)}
-    </div>
-  );
-};
+  if (authState === AUTH_STATES.SIGNIN) {
+    return <Signin onSigninSuccess={handleSigninSuccess} />;
+  }
+
+  if (authState === AUTH_STATES.SIGNUP) {
+    return <Signup onSignupSuccess={handleSignupSuccess} />;
+  }
+
+  return null;
+}
 
 export default App;

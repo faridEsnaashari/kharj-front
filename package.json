@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@date-io/dayjs": "^3.2.0",
+    "axios": "^1.17.0",
     "dayjs": "^1.11.19",
     "jalali-plugin-dayjs": "^1.1.4",
     "react": "^19.2.0",
