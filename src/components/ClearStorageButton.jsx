@@ -1,10 +1,11 @@
 // src/components/ClearStorageButton.jsx
 
 import React from 'react';
+import {logout} from './auth-token.logic';
 
 const ClearStorageButton = () => {
   const handleClearStorage = () => {
-    localStorage.clear();
+    logout()
     alert('LocalStorage cleared. Reloading...');
     window.location.reload();
   };

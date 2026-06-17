@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { BASEURL } from '../utils/api';
+import {setToken} from './auth-token.logic';
 
 const AuthForm = ({ onSignInSuccess }) => {
   const [username, setUsername] = useState('');
@@ -29,7 +30,7 @@ const AuthForm = ({ onSignInSuccess }) => {
       }
       
       const token = data.data.token;
-      localStorage.setItem('token', token);
+      setToken(token)
       setMessage('');
       onSignInSuccess(token);
       

@@ -2,11 +2,12 @@ export const BASEURL = import.meta.env.VITE_API_BASE_URL||`http://${document.URL
 
 export const unitMapper = {
   rl:"RIAL",
-
+  rnt:"RENT",
   dl: 'DOLAR',
   eu:  'EUR',
   tlg: 'TALA_GERAM',
   tlr:'TALA_ROB',
+  ayr:'AYAR',
 };
 
 export const bankMapper = {
@@ -42,6 +43,8 @@ export const categoryMapper = {
   bd: 'BEDEHI',
   hl: 'HALEHOOLE',
   b: 'BANK',
+  gft: 'GIFT',
+  dt: 'DATE',
 };
 
 export const incomeCategoryMapper = {
