@@ -25,7 +25,7 @@ const BankSmsTab = ({ token }) => {
     setResult('Processing SMS...');
 
     try {
-      const res = await fetch(`${BASEURL}/payment/text`, {
+      const res = await fetch(`${BASEURL}/uncomplete-payments/text`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { BASEURL, bankMapper, categoryMapper, createSelectOptions } from '../utils/api';
+import { BASEURL, bankMapper, categoryMapper, createSelectOptions, unitMapper } from '../utils/api';
 
 import JalaliDateInput from './JalaliDateInput'; 
 import { date} from '../utils/date';
 
 const bankOptions = createSelectOptions(bankMapper);
 const categoryOptions = createSelectOptions(categoryMapper);
+const unitOptions = createSelectOptions(unitMapper);
 
 const PaymentTab = ({ token, relatedUsers }) => {
   const getInitialJalaliDate = () => {
@@ -20,25 +21,16 @@ const PaymentTab = ({ token, relatedUsers }) => {
     description: '',
     isFun: '0', 
     isMaman: '0',
+    unit:unitOptions[0]?.value||"",
     paidAtDate: getInitialJalaliDate(), 
   });
   const [result, setResult] = useState('');
 
-  const handleChange = (e) => {
-    const key = e.target.id.replace('payment-', '');
-    setForm({ ...form, [key]: e.target.value });
-  };
-  
-  // Handler to capture the date change from the reusable component
-  const handleDateChange = (newDateString) => {
-    setForm(prevForm => ({ ...prevForm, paidAtDate: newDateString }));
-  };
-
-
   const handleSubmit = async () => {
-    const { owner, price, bank, category, description, paidAtDate } = form;
+
+    const { owner, price, bank, category, description, paidAtDate, unit } = form;
     
-    if (!price || !bank || !category || !owner || !paidAtDate) {
+    if (!price || !bank || !category || !owner || !paidAtDate || !unit) {
       setResult('Please fill all required fields.');
       return;
     }
@@ -51,6 +43,7 @@ const PaymentTab = ({ token, relatedUsers }) => {
       isFun: false, 
       isMaman: false, 
       ownerId: Number(owner),
+      unit,
       paidAt: date(paidAtDate,{jalali:true}).format("YYYY-MM-DD HH:mm:ss"), 
     };
 
@@ -77,7 +70,11 @@ const PaymentTab = ({ token, relatedUsers }) => {
       
       <label>
         Owner:
-        <select id="payment-owner" value={form.owner} onChange={handleChange}>
+        <select
+          id="payment-owner"
+          value={form.owner}
+          onChange={e=>setForm({...form,owner:e.target.value})} 
+        >
           {relatedUsers.map((user) => (
             <option key={user.id} value={user.id}>
               {user.name}
@@ -93,26 +90,45 @@ const PaymentTab = ({ token, relatedUsers }) => {
           id="payment-price" 
           min="0" 
           value={form.price} 
-          onChange={handleChange} 
+          onChange={e=>setForm({...form,price:e.target.value})} 
         />
       </label>
 
       <JalaliDateInput
         label="Paid At (Jalali)"
-        onDateChange={handleDateChange}
+        onDateChange={e=>setForm({...form,paidAtDate:e})}
         initialJalaliDate={form.paidAtDate}
       />
       
       <label>
         Bank:
-        <select id="payment-bank" value={form.bank} onChange={handleChange}>
+        <select
+          id="payment-bank"
+          value={form.bank}
+          onChange={e=>setForm({...form,bank:e.target.value})} 
+        >
           {bankOptions.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
+        </select>
+      </label>
+
+      <label>
+        Unit:
+        <select 
+          id="income-bank" 
+          value={form.unit} 
+          onChange={(e)=>setForm({...form,unit:e.target.value})} 
+        >
+          {unitOptions.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
         </select>
       </label>
       
       <label>
         Category:
-        <select id="payment-category" value={form.category} onChange={handleChange}>
+        <select
+          id="payment-category"
+          value={form.category}
+          onChange={e=>setForm({...form,category:e.target.value})} 
+        >
           {categoryOptions.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
         </select>
       </label>
@@ -123,7 +139,7 @@ const PaymentTab = ({ token, relatedUsers }) => {
           type="text" 
           id="payment-description" 
           value={form.description} 
-          onChange={handleChange} 
+          onChange={e=>setForm({...form,description:e.target.value})} 
         />
       </label>
       

@@ -1,34 +1,34 @@
-name: Deploy Kharj-front
-
-on:
-  push:
-    branches: ['main']
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Execute remote SSH commands using password
-        uses: appleboy/ssh-action@v1
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          password: ${{ secrets.SERVER_PASSWORD }}
-          port: ${{ secrets.SERVER_PORT }}
-          script: |
-            cd kharj-front/
-            git checkout main
-            git pull origin main
-
-            rm -rf .env
-
-            cat > .env <<EOF
-            VITE_API_BASE_URL=http://194.60.230.197:3005
-            EOF
-
-            npm run build
-            rm -rf ../refKharj/front/dist
-            cp -rv dist ../refKharj/front
+#name: Deploy Kharj-front
+#
+#on:
+#  push:
+#    branches: ['main']
+#
+#jobs:
+#  build:
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - uses: actions/checkout@v4
+#
+#      - name: Execute remote SSH commands using password
+#        uses: appleboy/ssh-action@v1
+#        with:
+#          host: ${{ secrets.SERVER_HOST }}
+#          username: ${{ secrets.SERVER_USER }}
+#          password: ${{ secrets.SERVER_PASSWORD }}
+#          port: ${{ secrets.SERVER_PORT }}
+#          script: |
+#            cd kharj-front/
+#            git checkout main
+#            git pull origin main
+#
+#            rm -rf .env
+#
+#            cat > .env <<EOF
+#            VITE_API_BASE_URL=http://194.60.230.197:3005
+#            EOF
+#
+#            npm run build
+#            rm -rf ../refKharj/front/dist
+#            cp -rv dist ../refKharj/front
