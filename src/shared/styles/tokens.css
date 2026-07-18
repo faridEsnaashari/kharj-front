@@ -1,0 +1,113 @@
+/*
+ * Kharj Design Tokens
+ * ---------------------------------------------------------------------------
+ * Single source of truth for the visual language extracted from the Visly
+ * screens. Components must never hard-code a colour, radius, or spacing value —
+ * always reference a token here so the whole system moves together.
+ *
+ * The six original variable names from features/auth/styles/auth.css are kept
+ * verbatim so existing auth markup keeps working unchanged.
+ */
+
+:root {
+  /* --- Surfaces -----------------------------------------------------------
+   * A ladder, not a palette. Each step up is a surface that sits "closer" to
+   * the user: screen -> card -> raised control. Never invent a step between.
+   */
+  --app-bg: #111214; /* Screen background */
+  --surface-card: #16181d; /* Cards, panels, list containers */
+  --input-bg: #1d1f24; /* Inputs, chips, icon tiles, raised controls */
+  --surface-hover: #23262d; /* Hover state for any interactive surface */
+  --backdrop: #000000; /* Desktop letterbox behind the mobile frame */
+
+  /* --- Borders ----------------------------------------------------------- */
+  --input-border: #2a2c33; /* Default hairline on every surface */
+  --border-strong: #3a3d47; /* Hover / emphasised divider */
+
+  /* --- Text -------------------------------------------------------------- */
+  --text-bright: #ffffff; /* Primary content */
+  --text-dimmed: #8a8f9d; /* Labels, subtitles, helper text */
+  --text-muted: #5f646f; /* Disabled, placeholder, footnotes */
+
+  /* --- Brand ------------------------------------------------------------- */
+  --brand-blue: #4b9cff; /* Primary actions, links, active nav, selection */
+  --brand-blue-hover: #6aadff;
+  --brand-blue-press: #3b87e0;
+  --brand-blue-soft: rgba(75, 156, 255, 0.12); /* Selected fill, icon tiles */
+  --brand-blue-ring: rgba(75, 156, 255, 0.35); /* Focus ring */
+
+  /* --- Semantic ----------------------------------------------------------
+   * Direction is meaning: green = money in / owed to you, red = money out /
+   * you owe. Always pair with an arrow or label — never rely on hue alone.
+   */
+  --success: #22c55e;
+  --success-soft: rgba(34, 197, 94, 0.1);
+  --danger: #ef4444;
+  --danger-soft: rgba(239, 68, 68, 0.1);
+  --warning: #f59e0b;
+  --warning-soft: rgba(245, 158, 11, 0.1);
+  --info: var(--brand-blue);
+  --info-soft: var(--brand-blue-soft);
+
+  /* --- Radius ------------------------------------------------------------
+   * Semantic, not a t-shirt scale. The size tells you what kind of thing it is.
+   */
+  --radius-input: 10px; /* Inputs, buttons, small controls */
+  --radius-card: 16px; /* Cards, panels, sheets */
+  --radius-tile: 12px; /* Icon tiles, avatars-as-squares */
+  --radius-pill: 999px; /* Chips, badges, segmented controls */
+
+  /* --- Spacing (4px base) ------------------------------------------------ */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+
+  /* --- Typography -------------------------------------------------------- */
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --text-display: 26px; /* Screen title */
+  --text-amount: 32px; /* Hero currency figures */
+  --text-lg: 18px;
+  --text-md: 15px; /* Body / input text */
+  --text-sm: 13px;
+  --text-xs: 11px; /* Section headers, badges */
+
+  --weight-regular: 400;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  /* Section headers are a distinctive, repeated treatment — tokenise it. */
+  --section-tracking: 0.5px;
+
+  /* --- Elevation --------------------------------------------------------- */
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-float: 0 8px 24px rgba(0, 0, 0, 0.45); /* FAB, popovers, menus */
+
+  /* --- Motion ------------------------------------------------------------
+   * Two speeds only: fast for colour/opacity, base for movement.
+   */
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --duration-fast: 0.15s;
+  --duration-base: 0.2s;
+
+  /* --- Layout ------------------------------------------------------------ */
+  --mobile-max-width: 412px; /* The frame every screen is designed against */
+  --control-height: 48px; /* Inputs, buttons — keeps rows aligned */
+  --tile-size: 40px;
+
+  /* Native form controls (date/time pickers, scrollbars) render dark. */
+  color-scheme: dark;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0.01s;
+    --duration-base: 0.01s;
+  }
+}
