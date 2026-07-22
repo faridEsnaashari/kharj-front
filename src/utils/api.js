@@ -45,6 +45,7 @@ export const categoryMapper = {
   b: 'BANK',
   gft: 'GIFT',
   dt: 'DATE',
+  hlt: 'HEALTH',
 };
 
 export const incomeCategoryMapper = {
