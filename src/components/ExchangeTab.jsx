@@ -22,15 +22,16 @@ const ExchangeTab = ({ token, relatedUsers }) => {
     toAmount: 0,
     fromOwner: defaultOwnerId,
     toOwner: defaultOwnerId,
-    paidAtDate: date().calendar("jalali").format("YYYY-MM-DD HH:mm:ss"), 
+    toUser: defaultOwnerId,
+    paidAtDate: date().calendar("jalali").format("YYYY-MM-DD HH:mm:ss"),
   });
   const [result, setResult] = useState('');
 
   const handleSubmit = async () => {
 
-    const { fromAccount, toAccount, fromAmount, toAmount, fromOwner, toOwner, paidAtDate, fromUnit,toUnit } = form;
+    const { fromAccount, toAccount, fromAmount, toAmount, fromOwner, toOwner, toUser, paidAtDate, fromUnit,toUnit } = form;
 
-    if (!fromAccount || !toAccount || !fromAmount || !toAmount || !fromOwner || !toOwner || !paidAtDate || !fromUnit || !toUnit) {
+    if (!fromAccount || !toAccount || !fromAmount || !toAmount || !fromOwner || !toOwner || !toUser || !paidAtDate || !fromUnit || !toUnit) {
       setResult('Please fill all fields.');
       return;
     }
@@ -44,7 +45,8 @@ const ExchangeTab = ({ token, relatedUsers }) => {
       toAmount: Number(toAmount),
       fromOwner: Number(fromOwner),
       toOwner: Number(toOwner),
-      paidAt: date(paidAtDate,{jalali:true}).format("YYYY-MM-DD HH:mm:ss"), 
+      toUser: Number(toUser),
+      paidAt: date(paidAtDate,{jalali:true}).format("YYYY-MM-DD HH:mm:ss"),
     };
 
     try {
@@ -155,6 +157,21 @@ const ExchangeTab = ({ token, relatedUsers }) => {
           id="exchange-toOwner"
           value={form.toOwner}
           onChange={(e)=>setForm({...form,toOwner:e.target.value})}
+        >
+          {relatedUsers.map((user) => (
+            <option key={user.id} value={user.id}>
+              {user.name}
+            </option>
+          ))}
+        </select>
+      </label>
+
+      <label>
+        To Account Manager:
+        <select
+          id="exchange-toUser"
+          value={form.toUser}
+          onChange={(e)=>setForm({...form,toUser:e.target.value})}
         >
           {relatedUsers.map((user) => (
             <option key={user.id} value={user.id}>
