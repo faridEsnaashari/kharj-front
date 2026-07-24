@@ -1,222 +1,112 @@
-:root {
-  --app-bg: #111214;       /* Deep solid dark background from image */
-  --input-bg: #1d1f24;     /* Slightly lighter charcoal for input blocks */
-  --input-border: #2a2c33; /* Clean subtle division line border */
-  --text-bright: #ffffff;
-  --text-dimmed: #8a8f9d;
-  --brand-blue: #4b9cff;   /* High visibility interface accent blue */
-}
+/*
+ * Auth screens — page scaffold only.
+ *
+ * Every control on these screens (inputs, buttons, badges) comes from
+ * src/shared/components; this file only lays out the page around them.
+ * Every value references a token from shared/styles/tokens.css — no colours,
+ * radii, or spacing are defined here.
+ */
 
-/* Outer layout engine: forces mobile frame on desktop, transparent on real phone */
-.mobile-viewport-container {
+/*
+ * Desktop letterbox: centres the phone-width screen horizontally on a black
+ * backdrop. No vertical centring — with `align-items: center`, content taller
+ * than the viewport gets its top clipped beyond scroll reach on small phones.
+ *
+ * 100dvh (with 100vh fallback for older browsers) tracks the *visible*
+ * viewport on mobile, where browser toolbars shrink and grow dynamically.
+ */
+.auth-viewport {
   min-height: 100vh;
-  background-color: #000000; /* Pitch black desktop backdrop */
+  min-height: 100dvh;
+  background: var(--color-backdrop);
   display: flex;
   justify-content: center;
-  align-items: center;
 }
 
-/* Core mobile screen simulation envelope */
-.visily-auth-screen {
+.auth-screen {
   width: 100%;
-  max-width: 412px; /* Perfect smartphone presentation width */
+  max-width: var(--screen-max-width);
   min-height: 100vh;
-  background-color: var(--app-bg);
-  padding: 48px 24px 32px 24px;
+  min-height: 100dvh;
+  background: var(--color-bg);
+  padding: var(--space-8) var(--space-6)
+    calc(var(--space-7) + env(safe-area-inset-bottom, 0px));
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: var(--font-family);
+  color: var(--color-text);
 }
 
-/* Branding elements layout definitions */
-.visily-header {
+.auth-header {
   text-align: center;
-  margin-bottom: 36px;
+  margin-bottom: var(--space-7);
 }
 
-.visily-app-logo {
-  background: var(--text-bright);
-  color: var(--app-bg);
-  width: 56px;
-  height: 56px;
-  border-radius: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 28px;
-  font-weight: bold;
-  margin: 0 auto 20px auto;
+/* The app logo reuses IconTile's geometry, inverted: light tile, dark glyph. */
+.auth-logo.ui-icon-tile {
+  background: var(--color-text);
+  color: var(--color-bg);
+  font-size: var(--font-size-xl);
+  margin-bottom: var(--space-5);
 }
 
-.visily-main-title {
-  font-size: 26px;
-  font-weight: 700;
-  color: var(--text-bright);
-  margin: 0 0 10px 0;
+.auth-title {
+  margin: 0 0 var(--space-2);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
 }
 
-.visily-sub-title {
-  color: var(--text-dimmed);
-  font-size: 14px;
-  line-height: 1.5;
+.auth-subtitle {
   margin: 0 auto;
-  max-width: 300px;
+  max-width: 80%;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-base);
 }
 
-/* Form structure wrapper configuration */
-.visily-auth-form {
-  display: flex;
-  flex-direction: column;
-  gap: 22px;
-}
-
-/* Custom Atomic Inputs Engine styling specs */
-.visily-input-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.visily-label-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--text-dimmed);
-  letter-spacing: 0.5px;
-}
-
-.visily-optional-text {
-  font-style: italic;
-  font-weight: normal;
-  text-transform: lowercase;
-}
-
-.visily-input-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.visily-input-field {
-  width: 100%;
-  background-color: var(--input-bg);
-  border: 1px solid var(--input-border);
-  border-radius: 10px;
-  padding: 14px 16px 14px 44px; /* Room on left for input context icons */
-  color: var(--text-bright);
-  font-size: 15px;
-  outline: none;
-  transition: border-color 0.15s ease-in-out;
-}
-
-.visily-input-field:focus {
-  border-color: var(--brand-blue);
-}
-
-.visily-input-icon-left {
-  position: absolute;
-  left: 16px;
-  color: var(--text-dimmed);
-  pointer-events: none;
-  font-size: 16px;
-}
-
-.visily-input-icon-right {
-  position: absolute;
-  right: 16px;
-  background: none;
-  border: none;
-  color: var(--text-dimmed);
-  cursor: pointer;
-  font-size: 16px;
-  padding: 0;
-}
-
-/* Call to Action Button Design specifications */
-.visily-submit-button {
-  background-color: var(--brand-blue);
-  color: var(--text-bright);
-  border: none;
-  border-radius: 10px;
-  padding: 16px;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  margin-top: 10px;
-  transition: opacity 0.2s;
-}
-
-.visily-submit-button:hover {
-  opacity: 0.9;
-}
-
-.visily-submit-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-/* Alternate choice switch UI interface settings */
-.visily-switch-prompt {
-  text-align: center;
-  margin-top: 24px;
-  font-size: 14px;
-  color: var(--text-dimmed);
-}
-
-.visily-switch-prompt p {
-  margin: 0 0 8px 0;
-}
-
-.visily-secondary-action-btn {
-  background: none;
-  border: 1px solid var(--input-border);
-  color: var(--brand-blue);
-  width: 100%;
-  padding: 14px;
-  border-radius: 10px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-/* Footer & Compliance legal section layout rules */
-.visily-bottom-badge-zone {
-  margin-top: auto; /* Locks compliance notes directly at page base layout boundary */
-  padding-top: 40px;
-  text-align: center;
-}
-
-.visily-security-pill {
-  display: inline-block;
-  background-color: rgba(16, 185, 129, 0.08);
-  color: #10b981;
-  padding: 6px 14px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 600;
-  margin-bottom: 16px;
-}
-
-.visily-disclaimer {
-  font-size: 11px;
-  color: var(--text-dimmed);
-  line-height: 1.6;
+/* Screen-level API error (field errors are Field's job). */
+.auth-error {
   margin: 0;
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-negative-soft);
+  border-radius: var(--radius-input);
+  color: var(--color-negative);
+  font-size: var(--font-size-sm);
 }
 
-.visily-disclaimer strong {
-  color: var(--text-bright);
-}
-
-.visily-error-msg {
-  color: #ef4444;
-  font-size: 13px;
+.auth-switch {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
   text-align: center;
+}
+
+.auth-switch p {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+
+.auth-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: auto;
+  padding-top: var(--space-7);
+  text-align: center;
+}
+
+.auth-disclaimer {
+  margin: 0;
+  max-width: 85%;
+  color: var(--color-text-faint);
+  font-size: var(--font-size-xs);
+  line-height: var(--line-height-base);
+}
+
+.auth-disclaimer strong {
+  color: var(--color-text-secondary);
 }

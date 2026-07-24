@@ -1,107 +1,129 @@
-import React, { useState } from 'react';
-import AuthInput from './components/AuthInput';
+import { useState } from 'react';
+import {
+  Badge,
+  Button,
+  Form,
+  IconArrowRight,
+  IconMail,
+  IconShield,
+  IconTag,
+  IconTile,
+  IconUser,
+  Input,
+  PasswordInput,
+} from '../../shared/components';
 import { useAuth } from './hooks/useAuth';
 import './styles/auth.css';
 
-const Signup = () => {
+/* The Visly Signup screen, rebuilt on the shared design-system components. */
+const Signup = ({ onSignupSuccess, onSwitchToSignin }) => {
   const { signup, loading, error } = useAuth();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
-    inviteCode: ''
+    inviteCode: '',
   });
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.id]: e.target.value });
+  const setField = (field) => {
+    return (event) => {
+      setFormData((current) => ({ ...current, [field]: event.target.value }));
+    };
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     try {
       await signup(formData);
-      alert('Account Created Successfully!');
-    } catch (err) {
-      console.error(err);
+
+      if (onSignupSuccess) {
+        onSignupSuccess();
+      }
+    } catch {
+      /* surfaced through useAuth's error state */
     }
   };
 
   return (
-    <div className="mobile-viewport-container">
-      <div className="visily-auth-screen">
-        
-        {/* Logo Header */}
-        <div className="visily-header">
-          <div className="visily-app-logo">⚡</div>
-          <h1 className="visily-main-title">Create Account</h1>
-          <p className="visily-sub-title">
+    <div className="auth-viewport">
+      <div className="auth-screen">
+        <header className="auth-header">
+          <IconTile size="lg" className="auth-logo">
+            ⚡
+          </IconTile>
+          <h1 className="auth-title">Create Account</h1>
+          <p className="auth-subtitle">
             The smartest way to track group wealth and settle shared debts.
           </p>
-        </div>
+        </header>
 
-        {/* Form elements */}
-        <form className="visily-auth-form" onSubmit={handleSubmit}>
-          {error && <div className="visily-error-msg">{error}</div>}
+        <Form onSubmit={handleSubmit}>
+          {error ? (
+            <p className="auth-error" role="alert">
+              {error}
+            </p>
+          ) : null}
 
-          <AuthInput
-            id="name"
-            label="FULL NAME"
-            icon="👤"
+          <Input
+            label="Full name"
             placeholder="John Doe"
+            autoComplete="name"
+            iconLeft={<IconUser size={18} />}
             value={formData.name}
-            onChange={handleChange}
+            onChange={setField('name')}
           />
 
-          <AuthInput
-            id="email"
-            label="EMAIL OR PHONE"
-            icon="✉️"
+          <Input
+            label="Email or phone"
             placeholder="name@example.com"
+            autoComplete="email"
+            iconLeft={<IconMail size={18} />}
             value={formData.email}
-            onChange={handleChange}
+            onChange={setField('email')}
           />
 
-          <AuthInput
-            id="password"
-            label="PASSWORD"
-            type="password"
-            icon="🔒"
+          <PasswordInput
             placeholder="••••••••"
+            autoComplete="new-password"
             value={formData.password}
-            onChange={handleChange}
+            onChange={setField('password')}
           />
 
-          <AuthInput
-            id="inviteCode"
-            label="INVITE CODE"
-            rightText="optional"
-            icon="🎫"
+          <Input
+            label="Invite code"
+            optional
             placeholder="ABC-123"
+            iconLeft={<IconTag size={18} />}
             value={formData.inviteCode}
-            onChange={handleChange}
+            onChange={setField('inviteCode')}
           />
 
-          <button type="submit" className="visily-submit-button" disabled={loading}>
-            {loading ? 'Creating Account...' : 'Create Free Account ➔'}
-          </button>
-        </form>
+          <Button
+            type="submit"
+            variant="primary"
+            fullWidth
+            loading={loading}
+            iconRight={<IconArrowRight size={18} />}
+          >
+            Create Free Account
+          </Button>
+        </Form>
 
-        {/* Switcher Link */}
-        <div className="visily-switch-prompt">
+        <div className="auth-switch">
           <p>Already have an account?</p>
-          <button type="button" className="visily-secondary-action-btn">Log In Instead</button>
+          <Button variant="secondary" fullWidth onClick={onSwitchToSignin}>
+            Log In Instead
+          </Button>
         </div>
 
-        {/* Bottom Metadata */}
-        <div className="visily-bottom-badge-zone">
-          <div className="visily-security-pill">
-            🛡️ 256-bit Encrypted Banking
-          </div>
-          <p className="visily-disclaimer">
-            By signing up, you agree to Kharj's <strong>Terms of Service</strong> and <strong>Privacy Policy</strong>. Financial data is handled securely.
+        <footer className="auth-footer">
+          <Badge tone="positive" iconLeft={<IconShield size={14} />}>
+            256-bit Encrypted Banking
+          </Badge>
+          <p className="auth-disclaimer">
+            By signing up, you agree to Kharj's <strong>Terms of Service</strong> and{' '}
+            <strong>Privacy Policy</strong>. Financial data is handled securely.
           </p>
-        </div>
-
+        </footer>
       </div>
     </div>
   );

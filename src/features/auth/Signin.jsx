@@ -1,86 +1,100 @@
-import React, { useState } from 'react';
-import AuthInput from './components/AuthInput';
+import { useState } from 'react';
+import {
+  Badge,
+  Button,
+  Form,
+  IconArrowRight,
+  IconShield,
+  IconTile,
+  IconUser,
+  Input,
+  PasswordInput,
+} from '../../shared/components';
 import { useAuth } from './hooks/useAuth';
 import './styles/auth.css';
 
-const Signin = ({ onSigninSuccess }) => {
+/*
+ * There is no Visly mockup for Signin — it is derived from the Signup screen's
+ * styling. The backend signs in with `username` (POST /auth/signin), so that
+ * is the field, whatever the mockup family shows.
+ */
+const Signin = ({ onSigninSuccess, onSwitchToSignup }) => {
   const { signin, loading, error } = useAuth();
-  const [formData, setFormData] = useState({
-    username: '',
-    password: '',
-  });
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.id]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     try {
-      await signin(formData);
+      await signin({ username, password });
+
       if (onSigninSuccess) {
         onSigninSuccess();
       }
-    } catch (err) {
-      console.error(err);
+    } catch {
+      /* surfaced through useAuth's error state */
     }
   };
 
   return (
-    <div className="mobile-viewport-container">
-      <div className="visily-auth-screen">
+    <div className="auth-viewport">
+      <div className="auth-screen">
+        <header className="auth-header">
+          <IconTile size="lg" className="auth-logo">
+            ⚡
+          </IconTile>
+          <h1 className="auth-title">Welcome Back</h1>
+          <p className="auth-subtitle">Sign in to manage your shared wealth and debts.</p>
+        </header>
 
-        <div className="visily-header">
-          <div className="visily-app-logo">⚡</div>
-          <h1 className="visily-main-title">Welcome Back</h1>
-          <p className="visily-sub-title">
-            Sign in to manage your shared wealth and debts.
-          </p>
-        </div>
+        <Form onSubmit={handleSubmit}>
+          {error ? (
+            <p className="auth-error" role="alert">
+              {error}
+            </p>
+          ) : null}
 
-        <form className="visily-auth-form" onSubmit={handleSubmit}>
-          {error && <div className="visily-error-msg">{error}</div>}
-
-          <AuthInput
-            id="username"
-            label="USERNAME OR EMAIL"
-            icon="👤"
+          <Input
+            label="Username or email"
             placeholder="john_doe"
-            value={formData.username}
-            onChange={handleChange}
+            autoComplete="username"
+            iconLeft={<IconUser size={18} />}
+            value={username}
+            onChange={(event) => setUsername(event.target.value)}
           />
 
-          <AuthInput
-            id="password"
-            label="PASSWORD"
-            type="password"
-            icon="🔒"
+          <PasswordInput
             placeholder="••••••••"
-            value={formData.password}
-            onChange={handleChange}
+            autoComplete="current-password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
           />
 
-          <button type="submit" className="visily-submit-button" disabled={loading}>
-            {loading ? 'Signing In...' : 'Sign In ➔'}
-          </button>
-        </form>
+          <Button
+            type="submit"
+            variant="primary"
+            fullWidth
+            loading={loading}
+            iconRight={<IconArrowRight size={18} />}
+          >
+            Sign In
+          </Button>
+        </Form>
 
-        <div className="visily-switch-prompt">
+        <div className="auth-switch">
           <p>Don't have an account?</p>
-          <button type="button" className="visily-secondary-action-btn">
+          <Button variant="secondary" fullWidth onClick={onSwitchToSignup}>
             Create One Instead
-          </button>
+          </Button>
         </div>
 
-        <div className="visily-bottom-badge-zone">
-          <div className="visily-security-pill">
-            🛡️ Secure Login
-          </div>
-          <p className="visily-disclaimer">
+        <footer className="auth-footer">
+          <Badge tone="positive" iconLeft={<IconShield size={14} />}>
+            Secure Login
+          </Badge>
+          <p className="auth-disclaimer">
             Your data is encrypted and secure. We never share your financial information.
           </p>
-        </div>
-
+        </footer>
       </div>
     </div>
   );
