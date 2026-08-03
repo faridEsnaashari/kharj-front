@@ -5,6 +5,7 @@ import PaymentComponent from './PaymentComponent';
 import IncomeComponent from './IncomeComponent';
 
 const bankOptions = createSelectOptions(bankMapper);
+const bankFilterOptions = [{ value: '', label: 'All Banks' }, ...bankOptions];
 const categoryOptions = createSelectOptions(categoryMapper);
 const incomeCategoryOptions = createSelectOptions(incomeCategoryMapper);
 const unitOptions = createSelectOptions(unitMapper);
@@ -19,14 +20,14 @@ const UncompletePaymentTab = ({ token, relatedUsers }) => {
   const [filters, setFilters] = useState({
     page: 1,
     size: 10,
-    bank: bankOptions[0]?.value || '',
+    bank: '',
   });
 
   const [editingId, setEditingId] = useState(null);
   const [form, setForm] = useState({
     owner: relatedUsers.length > 0 ? relatedUsers[0].id : '',
     price: '',
-    bank: '',
+    bank: bankOptions[0]?.value || '',
     category: categoryOptions[0]?.value || '',
     description: '',
     paidAtDate: date().calendar("jalali").format("YYYY-MM-DD HH:mm:ss"),
@@ -35,7 +36,10 @@ const UncompletePaymentTab = ({ token, relatedUsers }) => {
   const fetchUncompletes = async () => {
     setLoading(true);
     try {
-      const query = new URLSearchParams(filters).toString();
+      const nonEmptyFilters = Object.fromEntries(
+        Object.entries(filters).filter(([, value]) => value !== '')
+      );
+      const query = new URLSearchParams(nonEmptyFilters).toString();
       const res = await fetch(`${BASEURL}/uncomplete-payments?${query}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -95,7 +99,7 @@ const UncompletePaymentTab = ({ token, relatedUsers }) => {
     setForm({
       ...form,
       price: item.amount || '',
-      bank: filters.bank,
+      bank: filters.bank || bankOptions[0]?.value || '',
       description:  '',
       paidAtDate: initialJalali,
       category: item.type==="PAYMENT"?categoryOptions[0]?.value :incomeCategoryOptions[0].value,
@@ -184,7 +188,7 @@ const UncompletePaymentTab = ({ token, relatedUsers }) => {
         <label>
           Bank:
           <select name="bank" value={filters.bank} onChange={handleFilterChange}>
-            {bankOptions.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
+            {bankFilterOptions.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
           </select>
         </label>
 
@@ -249,11 +253,12 @@ const UncompletePaymentTab = ({ token, relatedUsers }) => {
 
             {editingId === item.id && item.type==="PAYMENT"&&(
               <PaymentComponent
-                setForm={setForm} 
+                setForm={setForm}
                 form={form}
                 relatedUsers={relatedUsers}
                 categoryOptions={categoryOptions}
                 unitOptions={unitOptions}
+                bankOptions={bankOptions}
                 id={item.id}
                 handleSubmit={handleSubmit}
               />
@@ -261,11 +266,12 @@ const UncompletePaymentTab = ({ token, relatedUsers }) => {
 
             {editingId === item.id && item.type==="INCOME"&&(
               <IncomeComponent
-                setForm={setForm} 
+                setForm={setForm}
                 form={form}
                 relatedUsers={relatedUsers}
                 categoryOptions={incomeCategoryOptions}
                 unitOptions={unitOptions}
+                bankOptions={bankOptions}
                 id={item.id}
                 handleSubmit={handleIncomeSubmit}
               />

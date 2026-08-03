@@ -1,10 +1,15 @@
 import JalaliDateInput from '../JalaliDateInput'; 
 
-const IncomeComponent=({setForm,form,relatedUsers,categoryOptions,unitOptions,id,handleSubmit})=>{
+const IncomeComponent=({setForm,form,relatedUsers,categoryOptions,unitOptions,bankOptions,id,handleSubmit})=>{
   return (
 
     <div className="form-overlay" style={{ marginTop: '15px', padding: '10px', background: '#e5f2de', color:"#5f605e" }}>
                 {/* Form fields same as before... */}
+                <label>Bank:
+                  <select id="un-income-bank" value={form.bank} onChange={(e)=>setForm({...form,bank:e.target.value})}>
+                    {bankOptions.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
+                  </select>
+                </label>
                 <label>Price: <input type="number" id="un-payment-price" value={form.price} onChange={(e)=>setForm({...form,amount:e.target.value})} /></label>
                 <JalaliDateInput
                   label="Date"
