@@ -1,15 +1,10 @@
 import JalaliDateInput from '../JalaliDateInput'; 
 
-const PaymentComponent=({setForm,form,relatedUsers,categoryOptions,unitOptions,bankOptions,id,handleSubmit})=>{
+const PaymentComponent=({setForm,form,relatedUsers,categoryOptions,unitOptions,id,handleSubmit})=>{
   return (
 
               <div className="form-overlay" style={{ marginTop: '15px', padding: '10px', background: '#f0f0f0' }}>
                 {/* Form fields same as before... */}
-                <label>Bank:
-                  <select id="un-payment-bank" value={form.bank} onChange={(e)=>setForm({...form,bank:e.target.value})}>
-                    {bankOptions.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
-                  </select>
-                </label>
                 <label>Price: <input type="number" id="un-payment-price" value={form.price} onChange={(e)=>setForm({...form,price:e.target.value})} /></label>
                 <JalaliDateInput
                   label="Date"
