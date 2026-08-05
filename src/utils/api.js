@@ -8,6 +8,10 @@ export const unitMapper = {
   tlg: 'TALA_GERAM',
   tlr:'TALA_ROB',
   ayr:'AYAR',
+  hmi:'HAMI',
+  vfrz : 'VFIROOZEH',
+  tdk : 'TADIKO',
+  prz : 'PARIZ',
 };
 
 export const bankMapper = {
