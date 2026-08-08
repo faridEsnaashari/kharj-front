@@ -1,10 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import { getDebts, getDebtSummary } from '../api/debts.api';
-import {
-  getBanks,
-  getUnits,
-  getRelatedUsers,
-} from '../../../shared/api/lookups.api';
+import { getBanks } from '../../bank/api/bank.api';
+import { getUnits } from '../../unit/api/unit.api';
+import { getRelatedUsers } from '../../user/api/user.api';
 import { usePaginatedList } from '../../../shared/hooks/usePaginatedList';
 import {
   DEBT_TABS,

@@ -22,3 +22,10 @@ export const createAccount = async (dto) => {
   const response = await api.post('/account', dto);
   return response.data.data;
 };
+
+export const getAccounts = async ({ bankId, unitId, ownedBy, userId }) => {
+  const response = await api.get('/account', {
+    params: { bankId, unitId, ownedBy, userId, size: 1 },
+  });
+  return response.data.data.rows;
+};

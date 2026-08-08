@@ -6,17 +6,14 @@ import {
   getPendingImports,
   deletePendingImport,
 } from '../api/inbox.api';
-import {
-  getBanks,
-  getRelatedUsers,
-  getAccounts,
-  getPaymentCategories,
-  getIncomeCategories,
-} from '../../../shared/api/lookups.api';
+import { getBanks } from '../../bank/api/bank.api';
+import { getRelatedUsers } from '../../user/api/user.api';
+import { getAccounts } from '../../accounts/api/accounts.api';
 import {
   createPayment,
-  createIncome,
-} from '../../../shared/api/create-transaction.api';
+  getPaymentCategories,
+} from '../../payments/api/payment.api';
+import { createIncome, getIncomeCategories } from '../../income/api/income.api';
 import { usePaginatedList } from '../../../shared/hooks/usePaginatedList';
 import { categoriesToOptions } from '../../../shared/lib/categories';
 import {

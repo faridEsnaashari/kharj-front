@@ -1,11 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
 import { createExchange } from '../api/exchange.api';
-import {
-  getBanks,
-  getUnits,
-  getRelatedUsers,
-  getAccounts,
-} from '../../../shared/api/lookups.api';
+import { getBanks } from '../../bank/api/bank.api';
+import { getUnits } from '../../unit/api/unit.api';
+import { getRelatedUsers } from '../../user/api/user.api';
+import { getAccounts } from '../../accounts/api/accounts.api';
 import { getRecentActivity, ACTIVITY_FILTERS } from '../../transaction';
 import {
   isExchangeFormValid,

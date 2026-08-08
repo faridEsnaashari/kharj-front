@@ -1,12 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
-import { createIncome } from '../../../shared/api/create-transaction.api';
-import {
-  getBanks,
-  getUnits,
-  getRelatedUsers,
-  getAccounts,
-  getIncomeCategories,
-} from '../../../shared/api/lookups.api';
+import { createIncome, getIncomeCategories } from '../api/income.api';
+import { getBanks } from '../../bank/api/bank.api';
+import { getUnits } from '../../unit/api/unit.api';
+import { getRelatedUsers } from '../../user/api/user.api';
+import { getAccounts } from '../../accounts/api/accounts.api';
 import { getRecentActivity, ACTIVITY_FILTERS } from '../../transaction';
 import { categoriesToOptions } from '../../../shared/lib/categories';
 import {
