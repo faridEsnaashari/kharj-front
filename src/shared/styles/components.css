@@ -813,6 +813,11 @@
   color: var(--color-text-muted);
 }
 
+.ui-list__caption {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}
+
 .ui-list__trailing {
   flex: none;
   display: flex;

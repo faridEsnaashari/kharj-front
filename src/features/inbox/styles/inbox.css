@@ -91,6 +91,10 @@
   border-bottom: 1px solid var(--color-border);
 }
 
+.ui-list__row.inbox-row__list {
+  border-bottom: none;
+}
+
 .inbox-row__trailing {
   display: flex;
   flex-direction: column;

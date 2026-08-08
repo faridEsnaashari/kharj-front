@@ -1,22 +1,7 @@
-import {
-  Section,
-  List,
-  ListRow,
-  ChipGroup,
-  IconTile,
-  Amount,
-  Spinner,
-  IconArrowDownLeft,
-  IconArrowUpRight,
-} from '../../../shared/components';
-import {
-  ACTIVITY_FILTERS,
-  isIncomeTransaction,
-  getSignedTransactionAmount,
-  getTransactionTitle,
-  getTransactionSubtitle,
-  getTransactionSourceLabel,
-} from '../logic/transaction.logic.js';
+import { Section, List, ChipGroup, Spinner } from '../../../shared/components';
+import { ACTIVITY_FILTERS } from '../logic/transaction.logic.js';
+import { TransactionRow } from './TransactionRow.jsx';
+import '../styles/transaction.css';
 
 const FILTER_OPTIONS = [
   { value: ACTIVITY_FILTERS.ALL, label: 'All' },
@@ -47,36 +32,12 @@ export const RecentActivityList = ({
           {transactions.length === 0 ? (
             <p className="dashboard-activity__empty">No activity yet.</p>
           ) : (
-            transactions.map((transaction) => {
-              const isIncome = isIncomeTransaction(transaction);
-
-              return (
-                <ListRow
-                  key={`${transaction.type}-${transaction.id}`}
-                  leading={
-                    <IconTile
-                      tone={isIncome ? 'positive' : 'negative'}
-                      size="sm"
-                    >
-                      {isIncome ? <IconArrowDownLeft /> : <IconArrowUpRight />}
-                    </IconTile>
-                  }
-                  title={getTransactionTitle(transaction)}
-                  subtitle={getTransactionSubtitle(transaction)}
-                  trailing={
-                    <div className="dashboard-activity__trailing">
-                      <span className="dashboard-activity__source">
-                        {getTransactionSourceLabel(transaction)}
-                      </span>
-                      <Amount
-                        value={getSignedTransactionAmount(transaction)}
-                        fractionDigits={0}
-                      />
-                    </div>
-                  }
-                />
-              );
-            })
+            transactions.map((transaction) => (
+              <TransactionRow
+                key={`${transaction.type}-${transaction.id}`}
+                transaction={transaction}
+              />
+            ))
           )}
         </List>
       )}

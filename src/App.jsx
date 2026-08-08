@@ -12,12 +12,13 @@ import { Exchange } from './features/exchange';
 import { Inbox } from './features/inbox';
 import { Accounts } from './features/accounts';
 import { Debts } from './features/debts';
+import { Transactions } from './features/transaction';
 import {
   BottomNav,
   IconHome,
   IconWallet,
   IconArrowDownLeft,
-  IconExchange,
+  IconList,
   IconUpload,
 } from './shared/components';
 import './App.css';
@@ -27,10 +28,10 @@ const NAV_TABS = [
   { key: 'payment', label: 'Payment', icon: IconWallet, path: '/payment' },
   { key: 'income', label: 'Income', icon: IconArrowDownLeft, path: '/income' },
   {
-    key: 'exchange',
-    label: 'Exchange',
-    icon: IconExchange,
-    path: '/exchange',
+    key: 'transactions',
+    label: 'Transactions',
+    icon: IconList,
+    path: '/transactions',
   },
   { key: 'inbox', label: 'Inbox', icon: IconUpload, path: '/inbox' },
 ];
@@ -54,6 +55,7 @@ function AuthenticatedShell({ onLogout }) {
             <Route path="/inbox" element={<Inbox />} />
             <Route path="/accounts" element={<Accounts />} />
             <Route path="/debts" element={<Debts />} />
+            <Route path="/transactions" element={<Transactions />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </div>

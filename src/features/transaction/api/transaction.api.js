@@ -4,6 +4,7 @@ export const getRecentActivity = async ({
   type,
   bankId,
   unitId,
+  ownedBy,
   page = 1,
   size = 10,
 } = {}) => {
@@ -14,6 +15,7 @@ export const getRecentActivity = async ({
       ...(type && type !== 'ALL' ? { type } : {}),
       ...(bankId ? { bankId } : {}),
       ...(unitId ? { unitId } : {}),
+      ...(ownedBy ? { ownedBy } : {}),
     },
   });
   return response.data.data;

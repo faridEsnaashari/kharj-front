@@ -67,6 +67,10 @@ export const usePaymentPage = () => {
         setUnits(unitsData || []);
         setRelatedUsers(relatedUsersData || []);
         setCategories(categoriesToOptions(categoriesData));
+
+        if (relatedUsersData?.[0]) {
+          setField('ownerId', relatedUsersData[0].id);
+        }
       } catch (err) {
         setSubmitError(getErrorMessage(err, 'Failed to load form options'));
       } finally {
@@ -75,7 +79,7 @@ export const usePaymentPage = () => {
     };
 
     loadOptions();
-  }, []);
+  }, [setField]);
 
   useEffect(() => {
     const bankId = form.bankId;

@@ -12,8 +12,10 @@ export const isIncomeTransaction = (transaction) =>
 export const getSignedTransactionAmount = (transaction) =>
   isIncomeTransaction(transaction) ? transaction.amount : -transaction.amount;
 
-export const getTransactionTitle = (transaction) =>
-  transaction.description || transaction.category || 'Transaction';
+export const getTransactionCategory = (transaction) => transaction.category;
+
+export const getTransactionDescription = (transaction) =>
+  transaction.description || '-';
 
 export const getTransactionSourceLabel = (transaction) => {
   const bankName = transaction.account?.bank?.name;
@@ -22,7 +24,7 @@ export const getTransactionSourceLabel = (transaction) => {
   return [bankName, unitName].filter(Boolean).join(' · ');
 };
 
-export const getTransactionSubtitle = (transaction) => {
+export const getTransactionDateTime = (transaction) => {
   const [datePart, timePart] = (transaction.paidAt || '').split(/[T ]/);
   const formattedDate = formatForDisplay(datePart, CALENDARS.JALALI);
 

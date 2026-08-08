@@ -27,10 +27,10 @@ export const DEBT_DIRECTION_OPTIONS = [
 ];
 
 export const isOwedToCurrentUser = (row, currentUserId) =>
-  row.toUserId === currentUserId;
+  row.fromUserId === currentUserId;
 
 export const getDebtCounterparty = (row, currentUserId) =>
-  isOwedToCurrentUser(row, currentUserId) ? row.fromUser : row.toUser;
+  isOwedToCurrentUser(row, currentUserId) ? row.toUser : row.fromUser;
 
 export const getSignedDebtAmount = (row, currentUserId) =>
   isOwedToCurrentUser(row, currentUserId) ? row.amount : -row.amount;
@@ -58,14 +58,14 @@ export const buildHistoryQueryParams = (filters, currentUserId) => {
   };
 
   if (filters.direction === DEBT_DIRECTIONS.I_OWE) {
-    params.fromUserId = currentUserId;
-    if (filters.counterpartyId) {
-      params.toUserId = filters.counterpartyId;
-    }
-  } else if (filters.direction === DEBT_DIRECTIONS.OWED_TO_ME) {
     params.toUserId = currentUserId;
     if (filters.counterpartyId) {
       params.fromUserId = filters.counterpartyId;
+    }
+  } else if (filters.direction === DEBT_DIRECTIONS.OWED_TO_ME) {
+    params.fromUserId = currentUserId;
+    if (filters.counterpartyId) {
+      params.toUserId = filters.counterpartyId;
     }
   }
 

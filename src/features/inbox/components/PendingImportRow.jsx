@@ -30,6 +30,7 @@ export const PendingImportRow = ({ row, onOpen, onDelete }) => {
   return (
     <div className="inbox-row">
       <ListRow
+        className="inbox-row__list"
         leading={
           <IconTile tone={isIncome ? 'positive' : 'negative'} size="sm">
             {isIncome ? <IconArrowDownLeft /> : <IconArrowUpRight />}

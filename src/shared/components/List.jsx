@@ -33,6 +33,7 @@ export const ListRow = ({
   leading = null,
   title,
   subtitle,
+  caption,
   trailing = null,
   onClick,
   className,
@@ -51,6 +52,7 @@ export const ListRow = ({
         {subtitle ? (
           <span className="ui-list__subtitle">{subtitle}</span>
         ) : null}
+        {caption ? <span className="ui-list__caption">{caption}</span> : null}
       </div>
 
       {trailing ? <div className="ui-list__trailing">{trailing}</div> : null}

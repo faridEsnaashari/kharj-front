@@ -67,6 +67,10 @@ export const useIncomePage = () => {
         setUnits(unitsData || []);
         setRelatedUsers(relatedUsersData || []);
         setCategories(categoriesToOptions(categoriesData));
+
+        if (relatedUsersData?.[0]) {
+          setField('ownerId', relatedUsersData[0].id);
+        }
       } catch (err) {
         setSubmitError(getErrorMessage(err, 'Failed to load form options'));
       } finally {
@@ -75,7 +79,7 @@ export const useIncomePage = () => {
     };
 
     loadOptions();
-  }, []);
+  }, [setField]);
 
   useEffect(() => {
     const bankId = form.bankId;

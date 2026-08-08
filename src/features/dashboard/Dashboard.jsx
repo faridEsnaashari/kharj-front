@@ -42,6 +42,7 @@ export const Dashboard = () => {
         onPay={() => navigate('/payment')}
         onIncome={() => navigate('/income')}
         onExcelImport={() => navigate('/inbox')}
+        onTransactions={() => navigate('/transactions')}
         onExchange={() => navigate('/exchange')}
         onAccounts={() => navigate('/accounts')}
         onDebts={() => navigate('/debts')}

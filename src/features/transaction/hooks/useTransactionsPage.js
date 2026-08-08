@@ -1,23 +1,13 @@
 import { useCallback, useEffect, useState } from 'react';
-import { listAccounts, createAccount } from '../api/accounts.api';
+import { getRecentActivity } from '../api/transaction.api.js';
 import { getBanks } from '../../bank/api/bank.api';
 import { getUnits } from '../../unit/api/unit.api';
 import { getRelatedUsers } from '../../user/api/user.api';
 import { usePaginatedList } from '../../../shared/hooks/usePaginatedList';
-import {
-  isCreateAccountFormValid,
-  buildCreateAccountPayload,
-} from '../logic/accounts.logic';
-
-const INITIAL_FORM = {
-  bankId: '',
-  unitId: '',
-  ownerId: '',
-  ballance: '',
-  priority: '',
-};
+import { ACTIVITY_FILTERS } from '../logic/transaction.logic.js';
 
 const INITIAL_FILTERS = {
+  type: ACTIVITY_FILTERS.ALL,
   bankId: '',
   unitId: '',
   ownedBy: '',
@@ -26,7 +16,7 @@ const INITIAL_FILTERS = {
 const getErrorMessage = (err, fallback) =>
   err.response?.data?.message || err.message || fallback;
 
-export const useAccountsPage = () => {
+export const useTransactionsPage = () => {
   const [banks, setBanks] = useState([]);
   const [units, setUnits] = useState([]);
   const [relatedUsers, setRelatedUsers] = useState([]);
@@ -34,36 +24,31 @@ export const useAccountsPage = () => {
 
   const [filters, setFilters] = useState(INITIAL_FILTERS);
 
-  const [createOpen, setCreateOpen] = useState(false);
-  const [form, setForm] = useState(INITIAL_FORM);
-  const [submitting, setSubmitting] = useState(false);
-
-  const [selectedAccountId, setSelectedAccountId] = useState(null);
-
   const [error, setError] = useState(null);
 
-  const fetchAccountsPage = useCallback(
+  const fetchTransactionsPage = useCallback(
     ({ page, size }) =>
-      listAccounts({
+      getRecentActivity({
         page,
         size,
+        type: filters.type,
         bankId: filters.bankId || undefined,
         unitId: filters.unitId || undefined,
         ownedBy: filters.ownedBy || undefined,
       }),
-    [filters.bankId, filters.unitId, filters.ownedBy],
+    [filters.type, filters.bankId, filters.unitId, filters.ownedBy],
   );
 
   const {
-    rows: accounts,
+    rows: transactions,
     total,
-    loading: accountsLoading,
+    loading: transactionsLoading,
     loadingMore,
     hasMore,
     loadMore,
     reload,
     error: listError,
-  } = usePaginatedList(fetchAccountsPage, 10);
+  } = usePaginatedList(fetchTransactionsPage, 10);
 
   useEffect(() => {
     reload();
@@ -117,54 +102,10 @@ export const useAccountsPage = () => {
     setFilters((current) => ({ ...current, [field]: value }));
   }, []);
 
-  const setField = useCallback((field, value) => {
-    setForm((current) => ({ ...current, [field]: value }));
-  }, []);
-
-  const openCreate = useCallback(() => {
-    setForm({
-      ...INITIAL_FORM,
-      ownerId: relatedUsers[0]?.id ?? '',
-    });
-    setCreateOpen(true);
-  }, [relatedUsers]);
-
-  const closeCreate = useCallback(() => {
-    setCreateOpen(false);
-  }, []);
-
-  const handleCreateSubmit = useCallback(async () => {
-    if (!isCreateAccountFormValid(form)) {
-      setError('Fill in bank, unit, owner, balance and priority first.');
-      return;
-    }
-
-    setSubmitting(true);
-    setError(null);
-
-    try {
-      await createAccount(buildCreateAccountPayload(form));
-      setCreateOpen(false);
-      reload();
-    } catch (err) {
-      setError(getErrorMessage(err, 'Failed to create account'));
-    } finally {
-      setSubmitting(false);
-    }
-  }, [form, reload]);
-
-  const openDetails = useCallback((account) => {
-    setSelectedAccountId(account.id);
-  }, []);
-
-  const closeDetails = useCallback(() => {
-    setSelectedAccountId(null);
-  }, []);
-
   return {
-    accounts,
+    transactions,
     total,
-    accountsLoading,
+    transactionsLoading,
     loadingMore,
     hasMore,
     loadMore,
@@ -174,16 +115,6 @@ export const useAccountsPage = () => {
     optionsLoading,
     filters,
     setFilter,
-    createOpen,
-    openCreate,
-    closeCreate,
-    form,
-    setField,
-    submitting,
-    handleCreateSubmit,
-    selectedAccountId,
-    openDetails,
-    closeDetails,
     error,
   };
 };

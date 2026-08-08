@@ -79,6 +79,11 @@ export const useExchangePage = () => {
         setBanks(banksData || []);
         setUnits(unitsData || []);
         setRelatedUsers(relatedUsersData || []);
+
+        if (relatedUsersData?.[0]) {
+          setField('fromOwnerId', relatedUsersData[0].id);
+          setField('toOwnerId', relatedUsersData[0].id);
+        }
       } catch (err) {
         setSubmitError(getErrorMessage(err, 'Failed to load form options'));
       } finally {
@@ -87,7 +92,7 @@ export const useExchangePage = () => {
     };
 
     loadOptions();
-  }, []);
+  }, [setField]);
 
   useEffect(() => {
     const toUserId = form.toUserId;

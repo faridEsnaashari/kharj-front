@@ -7,6 +7,7 @@ import {
   IconUpload,
   IconBank,
   IconScale,
+  IconList,
 } from '../../../shared/components';
 
 const noop = () => {};
@@ -27,6 +28,13 @@ const ACTIONS = [
     handlerProp: 'onIncome',
   },
   {
+    key: 'transactions',
+    label: 'Transactions',
+    tone: 'accent',
+    Icon: IconList,
+    handlerProp: 'onTransactions',
+  },
+  {
     key: 'exchange',
     label: 'Exchange',
     tone: 'accent',
@@ -35,7 +43,7 @@ const ACTIONS = [
   },
   {
     key: 'excelImport',
-    label: 'Excel Import',
+    label: 'Inbox',
     tone: 'neutral',
     Icon: IconUpload,
     handlerProp: 'onExcelImport',
@@ -60,6 +68,7 @@ export const ActionButtons = ({
   onPay = noop,
   onIncome = noop,
   onExcelImport = noop,
+  onTransactions = noop,
   onExchange = noop,
   onAccounts = noop,
   onDebts = noop,
@@ -68,6 +77,7 @@ export const ActionButtons = ({
     onPay,
     onIncome,
     onExcelImport,
+    onTransactions,
     onExchange,
     onAccounts,
     onDebts,
