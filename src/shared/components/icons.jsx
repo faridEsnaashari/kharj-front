@@ -1,11 +1,3 @@
-/*
- * Inline stroke icons.
- *
- * Every icon inherits `currentColor` and sizes from the `size` prop, so an icon
- * placed inside a Button or Chip automatically takes that component's colour.
- * Do not give an icon its own colour — colour it by colouring its container.
- */
-
 const Svg = ({ size = 20, children, ...rest }) => {
   return (
     <svg
@@ -242,6 +234,33 @@ export const IconTrash = (props) => {
       <path d="M4 7h16M10 11v6M14 11v6" />
       <path d="M5 7l1 13a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-13" />
       <path d="M9 7V4h6v3" />
+    </Svg>
+  );
+};
+
+export const IconUpload = (props) => {
+  return (
+    <Svg {...props}>
+      <path d="M12 16V4M7 9l5-5 5 5" />
+      <path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" />
+    </Svg>
+  );
+};
+
+export const IconHome = (props) => {
+  return (
+    <Svg {...props}>
+      <path d="M3 11 12 3l9 8" />
+      <path d="M5 10v10a1 1 0 0 0 1 1h5v-6h2v6h5a1 1 0 0 0 1-1V10" />
+    </Svg>
+  );
+};
+
+export const IconScale = (props) => {
+  return (
+    <Svg {...props}>
+      <path d="M12 3v18M7 21h10" />
+      <path d="M5 7h14M5 7l-3 6a3 3 0 0 0 6 0l-3-6ZM19 7l-3 6a3 3 0 0 0 6 0l-3-6Z" />
     </Svg>
   );
 };

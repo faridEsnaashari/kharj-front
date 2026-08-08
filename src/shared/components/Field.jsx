@@ -1,20 +1,6 @@
 import { useId } from 'react';
 import { cx } from '../utils/index.js';
 
-/*
- * Field owns everything around a control: the label, the optional/hint text,
- * the error message, and the aria wiring that connects them.
- *
- * It does not render the control itself — it calls `children` with the ids and
- * ARIA attributes the control must spread onto its input element:
- *
- *   <Field label="Amount" error={error}>
- *     {(controlProps) => <input {...controlProps} />}
- *   </Field>
- *
- * Every input type in this library composes Field. A new one must too —
- * that is what keeps labelling and error announcement consistent.
- */
 export const Field = ({
   label,
   hint,
@@ -45,7 +31,9 @@ export const Field = ({
           <label className="ui-field__label" htmlFor={controlId}>
             {label}
           </label>
-          {optional ? <span className="ui-field__optional">optional</span> : null}
+          {optional ? (
+            <span className="ui-field__optional">optional</span>
+          ) : null}
         </div>
       ) : null}
 

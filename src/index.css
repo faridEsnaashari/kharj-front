@@ -1,3 +1,6 @@
+html,
 body {
   margin: 0px;
+  background-color: var(--color-bg);
+  overscroll-behavior-y: none;
 }

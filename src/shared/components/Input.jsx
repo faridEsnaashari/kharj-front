@@ -4,20 +4,18 @@ import { Field } from './Field.jsx';
 import { Control } from './primitives.jsx';
 import { IconEye, IconEyeOff } from './icons.jsx';
 
-/*
- * A single-line text input.
- *
- * `iconLeft` sits inside the control (the person / envelope / lock glyphs in
- * the Visly auth screen). `addonRight` is for a trailing control such as the
- * password reveal toggle or a unit suffix.
- */
 export const Input = (props) => {
-  const [fieldProps, { iconLeft, addonRight, ...inputProps }] = splitFieldProps(props);
+  const [fieldProps, { iconLeft, addonRight, ...inputProps }] =
+    splitFieldProps(props);
 
   return (
     <Field {...fieldProps}>
       {(ariaProps) => (
-        <Control invalid={Boolean(fieldProps.error)} iconLeft={iconLeft} addonRight={addonRight}>
+        <Control
+          invalid={Boolean(fieldProps.error)}
+          iconLeft={iconLeft}
+          addonRight={addonRight}
+        >
           <input
             className="ui-control__input"
             required={fieldProps.required}
@@ -30,7 +28,6 @@ export const Input = (props) => {
   );
 };
 
-/** Input with a built-in show/hide toggle. */
 export const PasswordInput = ({ label = 'Password', ...rest }) => {
   const [revealed, setRevealed] = useState(false);
 
@@ -75,16 +72,9 @@ export const Textarea = (props) => {
   );
 };
 
-/*
- * A native <select> restyled to match. Native is the right call here: the OS
- * picker is better on mobile than anything we would build, and the control has
- * no calendar-style rendering problem that would force a custom popover.
- *
- * `options` is `[{ value, label }]`. `placeholder` renders a disabled first
- * option so an unset select reads as empty rather than as its first item.
- */
 export const Select = (props) => {
-  const [fieldProps, { options = [], placeholder, ...selectProps }] = splitFieldProps(props);
+  const [fieldProps, { options = [], placeholder, ...selectProps }] =
+    splitFieldProps(props);
 
   return (
     <Field {...fieldProps}>
@@ -114,11 +104,6 @@ export const Select = (props) => {
   );
 };
 
-/*
- * Form is a thin <form> wrapper that prevents the default submit and stacks its
- * children with consistent spacing. It exists so screens never re-derive form
- * layout, and so `onSubmit` always receives a plain callback.
- */
 export const Form = ({ onSubmit, className, children, ...rest }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -129,13 +114,17 @@ export const Form = ({ onSubmit, className, children, ...rest }) => {
   };
 
   return (
-    <form className={cx('ui-form', className)} onSubmit={handleSubmit} noValidate {...rest}>
+    <form
+      className={cx('ui-form', className)}
+      onSubmit={handleSubmit}
+      noValidate
+      {...rest}
+    >
       {children}
     </form>
   );
 };
 
-/** Places two controls side by side — the Date + Time pair in New Payment. */
 export const FormRow = ({ className, children }) => {
   return <div className={cx('ui-form__row', className)}>{children}</div>;
 };

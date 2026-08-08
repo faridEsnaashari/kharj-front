@@ -13,13 +13,6 @@ import { cx } from '../utils/index.js';
 import { IconButton } from './Button.jsx';
 import { IconChevronLeft, IconChevronRight } from './icons.jsx';
 
-/*
- * A month grid.
- *
- * `value` in and `onChange` out are both Gregorian ISO (`YYYY-MM-DD`) — the
- * `calendar` prop only changes what the user sees. See src/shared/lib/date.js
- * for why that separation is load-bearing.
- */
 export const Calendar = ({
   value,
   onChange,
@@ -28,34 +21,37 @@ export const Calendar = ({
 }) => {
   const selectedTimestamp = isoToTimestamp(value);
 
-  /*
-   * Both of these read the clock, so they use lazy initialisers — calling
-   * Date.now() during render would make the grid re-derive on every re-render.
-   * `today` only drives the is-today outline, so pinning it at mount is fine.
-   */
   const [cursor, setCursor] = useState(() => selectedTimestamp ?? Date.now());
   const [today] = useState(() => Date.now());
 
   const { blanks, days } = monthGrid(cursor, calendar);
+  const isRtl = calendar === CALENDARS.JALALI;
 
   const goToMonth = (amount) => {
     setCursor((current) => addMonths(current, calendar, amount));
   };
 
   return (
-    <div
-      className={cx('ui-calendar', className)}
-      dir={calendar === CALENDARS.JALALI ? 'rtl' : 'ltr'}
-    >
+    <div className={cx('ui-calendar', className)} dir={isRtl ? 'rtl' : 'ltr'}>
       <div className="ui-calendar__header">
         <IconButton label="Previous month" onClick={() => goToMonth(-1)}>
-          <IconChevronLeft size={18} />
+          {isRtl ? (
+            <IconChevronRight size={18} />
+          ) : (
+            <IconChevronLeft size={18} />
+          )}
         </IconButton>
 
-        <span className="ui-calendar__month">{monthLabel(cursor, calendar)}</span>
+        <span className="ui-calendar__month">
+          {monthLabel(cursor, calendar)}
+        </span>
 
         <IconButton label="Next month" onClick={() => goToMonth(1)}>
-          <IconChevronRight size={18} />
+          {isRtl ? (
+            <IconChevronLeft size={18} />
+          ) : (
+            <IconChevronRight size={18} />
+          )}
         </IconButton>
       </div>
 

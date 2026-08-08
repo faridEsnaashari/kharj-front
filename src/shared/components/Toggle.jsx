@@ -1,12 +1,6 @@
 import { useId } from 'react';
 import { cx } from '../utils/index.js';
 
-/*
- * SegmentedControl — a small set of mutually exclusive views, rendered as one
- * pill split into segments (the Summaries / Detailed History switch on the
- * Debts Ledger). Use it for switching *what is shown*; use ChipGroup for
- * filtering or picking a value.
- */
 export const SegmentedControl = ({
   options = [],
   value,
@@ -15,7 +9,11 @@ export const SegmentedControl = ({
   className,
 }) => {
   return (
-    <div className={cx('ui-segmented', className)} role="tablist" aria-label={label}>
+    <div
+      className={cx('ui-segmented', className)}
+      role="tablist"
+      aria-label={label}
+    >
       {options.map((option) => {
         const selected = value === option.value;
 
@@ -36,10 +34,6 @@ export const SegmentedControl = ({
   );
 };
 
-/*
- * Switch — an immediate on/off setting (Profile & Settings). It commits on
- * change; if a toggle needs a Save button, it is a checkbox in a form, not this.
- */
 export const Switch = ({
   checked = false,
   onChange,
@@ -56,7 +50,9 @@ export const Switch = ({
         <label className="ui-switch__label" htmlFor={id}>
           {label}
         </label>
-        {description ? <p className="ui-switch__description">{description}</p> : null}
+        {description ? (
+          <p className="ui-switch__description">{description}</p>
+        ) : null}
       </div>
 
       <button

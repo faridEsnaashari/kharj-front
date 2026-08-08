@@ -15,7 +15,6 @@ import {
 import { useAuth } from './hooks/useAuth';
 import './styles/auth.css';
 
-/* The Visly Signup screen, rebuilt on the shared design-system components. */
 const Signup = ({ onSignupSuccess, onSwitchToSignin }) => {
   const { signup, loading, error } = useAuth();
   const [formData, setFormData] = useState({
@@ -39,7 +38,7 @@ const Signup = ({ onSignupSuccess, onSwitchToSignin }) => {
         onSignupSuccess();
       }
     } catch {
-      /* surfaced through useAuth's error state */
+      return;
     }
   };
 
@@ -120,7 +119,8 @@ const Signup = ({ onSignupSuccess, onSwitchToSignin }) => {
             256-bit Encrypted Banking
           </Badge>
           <p className="auth-disclaimer">
-            By signing up, you agree to Kharj's <strong>Terms of Service</strong> and{' '}
+            By signing up, you agree to Kharj's{' '}
+            <strong>Terms of Service</strong> and{' '}
             <strong>Privacy Policy</strong>. Financial data is handled securely.
           </p>
         </footer>

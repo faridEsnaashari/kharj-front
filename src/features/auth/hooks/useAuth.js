@@ -29,7 +29,8 @@ export const useAuth = () => {
         token,
       };
     } catch (err) {
-      const errorMessage = err.response?.data?.message || err.message || 'Signin failed';
+      const errorMessage =
+        err.response?.data?.message || err.message || 'Signin failed';
       setError(errorMessage);
       throw new Error(errorMessage);
     } finally {
@@ -38,7 +39,6 @@ export const useAuth = () => {
   };
 
   const signup = async (formData) => {
-    // Signup endpoint doesn't exist yet, so for now just mock it
     setLoading(true);
     setError(null);
 

@@ -13,11 +13,6 @@ import {
 import { useAuth } from './hooks/useAuth';
 import './styles/auth.css';
 
-/*
- * There is no Visly mockup for Signin — it is derived from the Signup screen's
- * styling. The backend signs in with `username` (POST /auth/signin), so that
- * is the field, whatever the mockup family shows.
- */
 const Signin = ({ onSigninSuccess, onSwitchToSignup }) => {
   const { signin, loading, error } = useAuth();
   const [username, setUsername] = useState('');
@@ -31,7 +26,7 @@ const Signin = ({ onSigninSuccess, onSwitchToSignup }) => {
         onSigninSuccess();
       }
     } catch {
-      /* surfaced through useAuth's error state */
+      return;
     }
   };
 
@@ -43,7 +38,9 @@ const Signin = ({ onSigninSuccess, onSwitchToSignup }) => {
             ⚡
           </IconTile>
           <h1 className="auth-title">Welcome Back</h1>
-          <p className="auth-subtitle">Sign in to manage your shared wealth and debts.</p>
+          <p className="auth-subtitle">
+            Sign in to manage your shared wealth and debts.
+          </p>
         </header>
 
         <Form onSubmit={handleSubmit}>
@@ -92,7 +89,8 @@ const Signin = ({ onSigninSuccess, onSwitchToSignup }) => {
             Secure Login
           </Badge>
           <p className="auth-disclaimer">
-            Your data is encrypted and secure. We never share your financial information.
+            Your data is encrypted and secure. We never share your financial
+            information.
           </p>
         </footer>
       </div>

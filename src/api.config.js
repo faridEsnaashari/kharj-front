@@ -1,9 +1,7 @@
 import axios from 'axios';
 
-// API Base URL - change this to your backend URL
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
-// Create axios instance
 export const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
@@ -11,7 +9,6 @@ export const api = axios.create({
   },
 });
 
-// Request interceptor - attach token to every request
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('authToken');
@@ -20,10 +17,9 @@ api.interceptors.request.use(
     }
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error),
 );
 
-// Response interceptor - handle token expiration
 api.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -32,7 +28,7 @@ api.interceptors.response.use(
       window.location.href = '/signin';
     }
     return Promise.reject(error);
-  }
+  },
 );
 
 export const setAuthToken = (token) => {

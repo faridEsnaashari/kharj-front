@@ -1,25 +1,9 @@
-/*
- * Styles for every component in src/shared/components.
- *
- * Imported once, in src/main.jsx. Individual components never import CSS.
- * Every value here references a token from tokens.css — if you need a value
- * that is not tokenised, add the token there first.
- */
-
 @import './tokens.css';
-
-/* ===================================================================== */
-/* Base                                                                  */
-/* ===================================================================== */
 
 .ui-icon {
   flex: none;
   display: block;
 }
-
-/* ===================================================================== */
-/* Button                                                                */
-/* ===================================================================== */
 
 .ui-button {
   display: inline-flex;
@@ -35,8 +19,11 @@
   font-weight: var(--font-weight-semibold);
   line-height: var(--line-height-tight);
   cursor: pointer;
-  transition: background-color var(--transition-fast), border-color var(--transition-fast),
-    color var(--transition-fast), opacity var(--transition-fast);
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    color var(--transition-fast),
+    opacity var(--transition-fast);
 }
 
 .ui-button--full {
@@ -67,7 +54,6 @@
   cursor: not-allowed;
 }
 
-/* The single call to action on a screen. */
 .ui-button--primary {
   background: var(--color-accent);
   color: var(--color-text-on-accent);
@@ -142,7 +128,9 @@
   background: transparent;
   color: var(--color-text-secondary);
   cursor: pointer;
-  transition: background-color var(--transition-fast), color var(--transition-fast);
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast);
 }
 
 .ui-icon-button:hover {
@@ -155,9 +143,15 @@
   border-color: var(--color-border);
 }
 
-/* ===================================================================== */
-/* Spinner                                                               */
-/* ===================================================================== */
+.ui-icon-button--primary {
+  background: var(--color-accent);
+  color: var(--color-text-on-accent);
+}
+
+.ui-icon-button--primary:hover {
+  background: var(--color-accent-hover);
+  color: var(--color-text-on-accent);
+}
 
 .ui-spinner {
   display: inline-block;
@@ -178,10 +172,6 @@
     animation-duration: 2s;
   }
 }
-
-/* ===================================================================== */
-/* Field + controls                                                      */
-/* ===================================================================== */
 
 .ui-field {
   display: flex;
@@ -224,17 +214,18 @@
 
 .ui-control {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   gap: var(--space-3);
   width: 100%;
   min-height: var(--control-height);
-  padding: 0 var(--control-padding-x);
   box-sizing: border-box;
   background: var(--color-surface-input);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-input);
   color: var(--color-text);
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
 .ui-control:focus-within {
@@ -253,12 +244,14 @@
 .ui-control__icon {
   display: inline-flex;
   align-items: center;
+  padding-left: var(--control-padding-x);
   color: var(--color-text-muted);
 }
 
 .ui-control__input {
   flex: 1;
   min-width: 0;
+  padding: 0 var(--control-padding-x);
   background: transparent;
   border: none;
   outline: none;
@@ -267,17 +260,37 @@
   font-size: var(--font-size-input);
 }
 
+.ui-control--with-icon .ui-control__input {
+  padding-left: 0;
+}
+
+.ui-control--with-addon .ui-control__input {
+  padding-right: 0;
+}
+
 .ui-control__input::placeholder {
   color: var(--color-text-faint);
 }
 
+.ui-control__input[type='number'] {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.ui-control__input[type='number']::-webkit-outer-spin-button,
+.ui-control__input[type='number']::-webkit-inner-spin-button {
+  appearance: none;
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 .ui-control--textarea {
   align-items: flex-start;
-  padding-top: var(--space-3);
-  padding-bottom: var(--space-3);
 }
 
 .ui-control--textarea .ui-control__input {
+  padding-top: var(--space-3);
+  padding-bottom: var(--space-3);
   resize: vertical;
   line-height: var(--line-height-base);
 }
@@ -287,7 +300,6 @@
   cursor: pointer;
 }
 
-/* The chevron for the native select, drawn with a border triangle. */
 .ui-control--select {
   position: relative;
 }
@@ -295,12 +307,13 @@
 .ui-control--select::after {
   content: '';
   position: absolute;
+  top: 50%;
   right: var(--control-padding-x);
   width: 8px;
   height: 8px;
   border-right: 2px solid var(--color-text-muted);
   border-bottom: 2px solid var(--color-text-muted);
-  transform: translateY(-2px) rotate(45deg);
+  transform: translateY(calc(-50% - 2px)) rotate(45deg);
   pointer-events: none;
 }
 
@@ -316,6 +329,7 @@
 .ui-control__addon {
   display: inline-flex;
   align-items: center;
+  padding-right: var(--control-padding-x);
   color: var(--color-text-muted);
 }
 
@@ -338,7 +352,6 @@
   color: var(--color-text);
 }
 
-/* Control rendered as a <button> — the DateField trigger. */
 .ui-control--button {
   cursor: pointer;
   text-align: left;
@@ -350,7 +363,10 @@
 }
 
 .ui-control__value {
+  display: flex;
+  align-items: center;
   flex: 1;
+  padding-right: var(--control-padding-x);
   font-size: var(--font-size-input);
   color: var(--color-text);
 }
@@ -358,10 +374,6 @@
 .ui-control__value.is-placeholder {
   color: var(--color-text-faint);
 }
-
-/* ===================================================================== */
-/* Form                                                                  */
-/* ===================================================================== */
 
 .ui-form {
   display: flex;
@@ -374,10 +386,6 @@
   grid-template-columns: 1fr 1fr;
   gap: var(--space-3);
 }
-
-/* ===================================================================== */
-/* Calendar / DateField                                                  */
-/* ===================================================================== */
 
 .ui-datefield {
   position: relative;
@@ -438,7 +446,9 @@
   font-family: var(--font-family);
   font-size: var(--font-size-sm);
   cursor: pointer;
-  transition: background-color var(--transition-fast), color var(--transition-fast);
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast);
 }
 
 .ui-calendar__day:hover {
@@ -458,10 +468,6 @@
   font-weight: var(--font-weight-semibold);
 }
 
-/* ===================================================================== */
-/* Card                                                                  */
-/* ===================================================================== */
-
 .ui-card {
   display: block;
   width: 100%;
@@ -478,14 +484,15 @@
 
 .ui-card.is-interactive {
   cursor: pointer;
-  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+  transition:
+    border-color var(--transition-fast),
+    background-color var(--transition-fast);
 }
 
 .ui-card.is-interactive:hover {
   border-color: var(--color-border-strong);
 }
 
-/* Card selection: blue border + tinted fill. Chips select differently. */
 .ui-card.is-selected {
   border-color: var(--color-accent);
   background: var(--color-accent-soft);
@@ -514,10 +521,6 @@
   padding-top: var(--space-3);
   border-top: 1px solid var(--color-border);
 }
-
-/* ===================================================================== */
-/* IconTile                                                              */
-/* ===================================================================== */
 
 .ui-icon-tile {
   display: inline-flex;
@@ -567,10 +570,6 @@
   color: var(--color-warning);
 }
 
-/* ===================================================================== */
-/* Chip + Badge                                                          */
-/* ===================================================================== */
-
 .ui-chip-group {
   display: flex;
   flex-wrap: wrap;
@@ -591,7 +590,9 @@
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
   cursor: pointer;
-  transition: background-color var(--transition-fast), color var(--transition-fast),
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast),
     border-color var(--transition-fast);
 }
 
@@ -600,7 +601,6 @@
   color: var(--color-text);
 }
 
-/* Chip selection: solid blue fill. Cards select with border + tint. */
 .ui-chip.is-selected {
   background: var(--color-accent);
   border-color: var(--color-accent);
@@ -644,10 +644,6 @@
   background: var(--color-warning-soft);
   color: var(--color-warning);
 }
-
-/* ===================================================================== */
-/* Amount + ProgressBar                                                  */
-/* ===================================================================== */
 
 .ui-amount {
   display: inline-flex;
@@ -726,10 +722,6 @@
 .ui-progress--negative .ui-progress__fill {
   background: var(--color-negative);
 }
-
-/* ===================================================================== */
-/* Section + List                                                        */
-/* ===================================================================== */
 
 .ui-section {
   display: flex;
@@ -829,10 +821,6 @@
   gap: var(--space-1);
 }
 
-/* ===================================================================== */
-/* SegmentedControl + Switch                                             */
-/* ===================================================================== */
-
 .ui-segmented {
   display: flex;
   gap: var(--space-1);
@@ -854,7 +842,9 @@
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
   cursor: pointer;
-  transition: background-color var(--transition-fast), color var(--transition-fast);
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast);
 }
 
 .ui-segmented__option:hover {
@@ -905,7 +895,9 @@
   border: 1px solid var(--color-border);
   border-radius: var(--radius-pill);
   cursor: pointer;
-  transition: background-color var(--transition-fast), border-color var(--transition-fast);
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast);
 }
 
 .ui-switch__track.is-on {
@@ -927,10 +919,6 @@
 .ui-switch__track.is-on .ui-switch__thumb {
   transform: translateX(20px);
 }
-
-/* ===================================================================== */
-/* Avatar                                                                */
-/* ===================================================================== */
 
 .ui-avatar {
   display: inline-flex;
@@ -981,4 +969,41 @@
 
 .ui-avatar-stack .ui-avatar + .ui-avatar {
   margin-left: calc(-1 * var(--space-2));
+}
+
+.ui-bottom-nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  display: flex;
+  width: 100%;
+  max-width: var(--screen-max-width);
+  margin: 0 auto;
+  height: var(--bottom-nav-height);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  box-sizing: content-box;
+}
+
+.ui-bottom-nav__tab {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  color: var(--color-text-muted);
+  text-decoration: none;
+}
+
+.ui-bottom-nav__tab.is-active {
+  color: var(--color-accent);
+}
+
+.ui-bottom-nav__label {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
 }

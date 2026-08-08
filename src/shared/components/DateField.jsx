@@ -7,14 +7,6 @@ import { Field } from './Field.jsx';
 import { Control } from './primitives.jsx';
 import { IconCalendar, IconClock } from './icons.jsx';
 
-/*
- * DateField is deliberately NOT a native <input type="date">: the native
- * control cannot render the Persian (Jalali) calendar, which this app needs.
- * So it renders a read-only trigger plus a popover <Calendar>.
- *
- * `value` / `onChange` are always Gregorian ISO (`YYYY-MM-DD`); `calendar`
- * changes only the displayed text and the grid.
- */
 export const DateField = (props) => {
   const [
     fieldProps,
@@ -50,7 +42,9 @@ export const DateField = (props) => {
             onClick={() => setOpen((current) => !current)}
             {...ariaProps}
           >
-            <span className={cx('ui-control__value', !display && 'is-placeholder')}>
+            <span
+              className={cx('ui-control__value', !display && 'is-placeholder')}
+            >
               {display || placeholder}
             </span>
           </Control>
@@ -77,18 +71,16 @@ export const DateField = (props) => {
   );
 };
 
-/*
- * TimeField *is* a native <input type="time">. Time has no calendar dimension,
- * so there is nothing the OS picker gets wrong — unlike dates, where the native
- * control cannot express Jalali.
- */
 export const TimeField = (props) => {
   const [fieldProps, inputProps] = splitFieldProps(props);
 
   return (
     <Field {...fieldProps}>
       {(ariaProps) => (
-        <Control invalid={Boolean(fieldProps.error)} iconLeft={<IconClock size={18} />}>
+        <Control
+          invalid={Boolean(fieldProps.error)}
+          iconLeft={<IconClock size={18} />}
+        >
           <input
             type="time"
             className="ui-control__input"

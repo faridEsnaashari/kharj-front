@@ -1,22 +1,3 @@
-/*
- * Date helpers for the Jalali-aware DateField / Calendar.
- *
- * THE CRITICAL RULE
- * -----------------
- * Every value that crosses the boundary of this module — in or out — is a
- * *Gregorian* ISO date string (`YYYY-MM-DD`). The Jalali calendar exists only
- * as a rendering mode.
- *
- * `jalali-plugin-dayjs` works by rebinding the calendar on a dayjs instance, so
- * calling `.format('YYYY-MM-DD')` on a Jalali-bound instance emits *Jalali*
- * numerals (e.g. `1403-03-04`). If such a string reaches component state or the
- * API it is silently misread as Gregorian and the date is wrong by ~621 years.
- *
- * To prevent that, every conversion here collapses through the epoch timestamp
- * (`.valueOf()`), which is calendar-independent. Any new helper added to this
- * file must do the same.
- */
-
 import dayjs from 'dayjs';
 import jalaliday from 'jalali-plugin-dayjs';
 
@@ -59,7 +40,6 @@ const GREGORIAN_MONTHS = [
   'December',
 ];
 
-/* Jalali weeks start on Saturday, Gregorian (as drawn in the mockups) on Sunday. */
 const JALALI_WEEKDAYS = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'];
 const GREGORIAN_WEEKDAYS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
 
@@ -67,11 +47,6 @@ const isJalali = (calendar) => {
   return calendar === CALENDARS.JALALI;
 };
 
-/*
- * Bind a timestamp to the requested calendar. Everything downstream reads
- * .year()/.month()/.date() off the result, which are calendar-relative — that
- * is exactly what the *display* layer wants, and never what state wants.
- */
 const bind = (timestamp, calendar) => {
   const base = dayjs(timestamp);
 
@@ -82,9 +57,6 @@ const bind = (timestamp, calendar) => {
   return base.calendar('gregory');
 };
 
-/* ---- Boundary conversions ------------------------------------------------ */
-
-/** Parse a Gregorian ISO string into a timestamp. Returns null when unparseable. */
 export const isoToTimestamp = (iso) => {
   if (!iso) {
     return null;
@@ -99,12 +71,6 @@ export const isoToTimestamp = (iso) => {
   return parsed.valueOf();
 };
 
-/**
- * Render a timestamp as a Gregorian ISO string.
- *
- * Note the explicit `.calendar('gregory')`: without it, a timestamp that
- * happened to arrive from a Jalali-bound instance would format in Jalali.
- */
 export const timestampToIso = (timestamp) => {
   if (timestamp === null || timestamp === undefined) {
     return '';
@@ -113,17 +79,10 @@ export const timestampToIso = (timestamp) => {
   return dayjs(timestamp).calendar('gregory').format(ISO_FORMAT);
 };
 
-/** Today, as a Gregorian ISO string. */
 export const todayIso = () => {
   return timestampToIso(Date.now());
 };
 
-/* ---- Display ------------------------------------------------------------- */
-
-/**
- * Format a Gregorian ISO string for display in the given calendar.
- * The output is for humans only — never feed it back into state.
- */
 export const formatForDisplay = (iso, calendar = CALENDARS.GREGORIAN) => {
   const timestamp = isoToTimestamp(iso);
 
@@ -154,8 +113,6 @@ export const weekdayLabels = (calendar) => {
   return GREGORIAN_WEEKDAYS;
 };
 
-/* ---- Calendar grid ------------------------------------------------------- */
-
 export const startOfMonth = (timestamp, calendar) => {
   return bind(timestamp, calendar).startOf('month').valueOf();
 };
@@ -169,25 +126,15 @@ export const isSameDay = (a, b) => {
     return false;
   }
 
-  return dayjs(a).calendar('gregory').isSame(dayjs(b).calendar('gregory'), 'day');
+  return dayjs(a)
+    .calendar('gregory')
+    .isSame(dayjs(b).calendar('gregory'), 'day');
 };
 
-/**
- * The day cells for the month containing `timestamp`, padded with leading
- * blanks so the first day lands under the correct weekday column.
- *
- * Returns `{ blanks, days }` where each day is
- * `{ timestamp, label }` — `label` is the calendar-relative day number and
- * `timestamp` is what a click hands back (converted to ISO by the caller).
- */
 export const monthGrid = (timestamp, calendar) => {
   const first = bind(startOfMonth(timestamp, calendar), calendar);
   const daysInMonth = first.daysInMonth();
 
-  /*
-   * dayjs .day() is always 0=Sunday regardless of the bound calendar, so shift
-   * it by one for Jalali, whose week starts on Saturday.
-   */
   const weekdayOfFirst = first.day();
   const blanks = isJalali(calendar) ? (weekdayOfFirst + 1) % 7 : weekdayOfFirst;
 

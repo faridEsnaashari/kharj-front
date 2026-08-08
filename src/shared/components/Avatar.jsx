@@ -15,11 +15,6 @@ const initialsFrom = (name) => {
     .toUpperCase();
 };
 
-/*
- * Avatar falls back through image → initials → generic person glyph, so a user
- * with no photo and no name still renders at the right size instead of
- * collapsing the layout.
- */
 export const Avatar = ({ name, src, size = 'md', className }) => {
   const initials = initialsFrom(name);
 
@@ -41,11 +36,12 @@ export const Avatar = ({ name, src, size = 'md', className }) => {
   );
 };
 
-/*
- * Overlapping avatars for shared ownership. Beyond `max`, the remainder
- * collapses into a "+N" counter rather than overflowing the row.
- */
-export const AvatarStack = ({ users = [], max = 3, size = 'sm', className }) => {
+export const AvatarStack = ({
+  users = [],
+  max = 3,
+  size = 'sm',
+  className,
+}) => {
   const visible = users.slice(0, max);
   const overflow = users.length - visible.length;
 
@@ -61,7 +57,13 @@ export const AvatarStack = ({ users = [], max = 3, size = 'sm', className }) => 
       ))}
 
       {overflow > 0 ? (
-        <span className={cx('ui-avatar', `ui-avatar--${size}`, 'ui-avatar--overflow')}>
+        <span
+          className={cx(
+            'ui-avatar',
+            `ui-avatar--${size}`,
+            'ui-avatar--overflow',
+          )}
+        >
           +{overflow}
         </span>
       ) : null}
