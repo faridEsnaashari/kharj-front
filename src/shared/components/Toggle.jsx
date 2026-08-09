@@ -1,0 +1,72 @@
+import { useId } from 'react';
+import { cx } from '../utils/index.js';
+
+export const SegmentedControl = ({
+  options = [],
+  value,
+  onChange,
+  label,
+  className,
+}) => {
+  return (
+    <div
+      className={cx('ui-segmented', className)}
+      role="tablist"
+      aria-label={label}
+    >
+      {options.map((option) => {
+        const selected = value === option.value;
+
+        return (
+          <button
+            key={option.value}
+            type="button"
+            role="tab"
+            aria-selected={selected}
+            className={cx('ui-segmented__option', selected && 'is-selected')}
+            onClick={() => onChange(option.value)}
+          >
+            {option.label}
+          </button>
+        );
+      })}
+    </div>
+  );
+};
+
+export const Switch = ({
+  checked = false,
+  onChange,
+  label,
+  description,
+  disabled = false,
+  className,
+}) => {
+  const id = useId();
+
+  return (
+    <div className={cx('ui-switch', disabled && 'is-disabled', className)}>
+      <div className="ui-switch__text">
+        <label className="ui-switch__label" htmlFor={id}>
+          {label}
+        </label>
+        {description ? (
+          <p className="ui-switch__description">{description}</p>
+        ) : null}
+      </div>
+
+      <button
+        type="button"
+        id={id}
+        role="switch"
+        aria-checked={checked}
+        aria-label={label}
+        disabled={disabled}
+        className={cx('ui-switch__track', checked && 'is-on')}
+        onClick={() => onChange(!checked)}
+      >
+        <span className="ui-switch__thumb" />
+      </button>
+    </div>
+  );
+};

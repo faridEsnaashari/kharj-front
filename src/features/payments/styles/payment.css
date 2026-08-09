@@ -1,0 +1,50 @@
+.payment {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-7);
+  padding: var(--space-6);
+  max-width: var(--screen-max-width);
+  margin: 0 auto;
+  box-sizing: border-box;
+  background: var(--color-bg);
+  font-family: var(--font-family);
+  color: var(--color-text);
+}
+
+.payment__error {
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-negative-soft);
+  border-radius: var(--radius-input);
+  color: var(--color-negative);
+  font-size: var(--font-size-sm);
+}
+
+.payment__success {
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-positive-soft);
+  border-radius: var(--radius-input);
+  color: var(--color-positive);
+  font-size: var(--font-size-sm);
+}
+
+.payment-form__balance {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-surface-raised);
+  border-radius: var(--radius-input);
+}
+
+.payment-form__balance-label {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.payment-form__balance-placeholder {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-faint);
+}

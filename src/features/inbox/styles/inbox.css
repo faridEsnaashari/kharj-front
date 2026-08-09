@@ -1,0 +1,203 @@
+.inbox {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-7);
+  padding: var(--space-6);
+  max-width: var(--screen-max-width);
+  margin: 0 auto;
+  box-sizing: border-box;
+  background: var(--color-bg);
+  font-family: var(--font-family);
+  color: var(--color-text);
+}
+
+.inbox-filters {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.inbox__error {
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-negative-soft);
+  border-radius: var(--radius-input);
+  color: var(--color-negative);
+  font-size: var(--font-size-sm);
+}
+
+.inbox__notice {
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-positive-soft);
+  border-radius: var(--radius-input);
+  color: var(--color-positive);
+  font-size: var(--font-size-sm);
+}
+
+.inbox__loading {
+  display: flex;
+  justify-content: center;
+  padding: var(--space-6) 0;
+}
+
+.inbox__empty {
+  margin: 0;
+  padding: var(--space-4) 0;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  text-align: center;
+}
+
+.inbox__sentinel {
+  display: flex;
+  justify-content: center;
+  padding: var(--space-4) 0;
+}
+
+.inbox-import-triggers {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.inbox-import__file {
+  display: flex;
+  align-items: center;
+  min-height: var(--control-height);
+  padding: 0 var(--control-padding-x);
+  box-sizing: border-box;
+  background: var(--color-surface-input);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-input);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-input);
+  cursor: pointer;
+}
+
+.inbox-import__file input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+}
+
+.inbox-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.ui-list__row.inbox-row__list {
+  border-bottom: none;
+}
+
+.inbox-row__trailing {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-1);
+}
+
+.inbox-row__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-2);
+}
+
+.inbox-modal__backdrop {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 20;
+}
+
+.inbox-modal {
+  width: 100%;
+  max-width: var(--screen-max-width);
+  max-height: 90vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding: var(--space-6);
+  padding-bottom: calc(var(--space-7) + env(safe-area-inset-bottom, 0px));
+  background: var(--color-surface);
+  border-radius: var(--radius-card) var(--radius-card) 0 0;
+  box-shadow: var(--shadow-raised);
+  box-sizing: border-box;
+}
+
+.inbox-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.inbox-modal__title {
+  margin: 0;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+}
+
+.inbox-modal__amount {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4);
+  background: var(--color-surface-raised);
+  border-radius: var(--radius-input);
+}
+
+.inbox-modal__account {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-surface-raised);
+  border-radius: var(--radius-input);
+}
+
+.inbox-modal__account-label {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.inbox-modal__account-value {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+}
+
+.inbox-modal__description {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-surface-raised);
+  border-radius: var(--radius-input);
+}
+
+.inbox-modal__description-label {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.inbox-modal__description-value {
+  margin: 0;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-base);
+  white-space: pre-wrap;
+}
+
+.inbox-modal__actions {
+  display: flex;
+  gap: var(--space-3);
+}

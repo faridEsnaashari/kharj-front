@@ -1,0 +1,66 @@
+.transaction-row__trailing {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-1);
+}
+
+.transaction-row__source {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-faint);
+  white-space: nowrap;
+}
+
+.transactions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-7);
+  padding: var(--space-6);
+  max-width: var(--screen-max-width);
+  margin: 0 auto;
+  box-sizing: border-box;
+  background: var(--color-bg);
+  font-family: var(--font-family);
+  color: var(--color-text);
+}
+
+.transactions__error {
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-negative-soft);
+  border-radius: var(--radius-input);
+  color: var(--color-negative);
+  font-size: var(--font-size-sm);
+}
+
+.transactions__loading {
+  display: flex;
+  justify-content: center;
+  padding: var(--space-6) 0;
+}
+
+.transactions__empty {
+  margin: 0;
+  padding: var(--space-4) 0;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  text-align: center;
+}
+
+.transactions__sentinel {
+  display: flex;
+  justify-content: center;
+  padding: var(--space-4) 0;
+}
+
+.transactions-filters {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.transactions-filters__selects {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3);
+}
