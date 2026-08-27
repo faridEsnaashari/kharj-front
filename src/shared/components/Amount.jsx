@@ -1,5 +1,6 @@
 import { cx } from '../utils/index.js';
 import { IconArrowDownLeft, IconArrowUpRight } from './icons.jsx';
+import { toDisplayAmount } from '../lib/currency.js';
 
 const formatters = new Map();
 
@@ -19,6 +20,7 @@ const formatterFor = (fractionDigits) => {
 
 export const Amount = ({
   value,
+  unit,
   currency = '',
   tone = 'auto',
   size = 'md',
@@ -27,7 +29,7 @@ export const Amount = ({
   fractionDigits = 2,
   className,
 }) => {
-  const numeric = Number(value) || 0;
+  const numeric = toDisplayAmount(value, unit);
   const direction =
     numeric > 0 ? 'positive' : numeric < 0 ? 'negative' : 'zero';
   const resolvedTone = tone === 'auto' ? direction : tone;

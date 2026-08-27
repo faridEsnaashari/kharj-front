@@ -1,3 +1,5 @@
+import { formatForDisplay, CALENDARS } from '../../../shared/lib/date.js';
+
 export const isPendingIncome = (row) => row.type === 'INCOME';
 
 export const getSignedPendingAmount = (row) =>
@@ -14,8 +16,9 @@ export const getPendingOwnerName = (row) => row.account?.owner?.name || '';
 
 export const getPendingSubtitle = (row) => {
   const [datePart, timePart] = (row.paidAt || '').split(/[T ]/);
+  const formattedDate = formatForDisplay(datePart, CALENDARS.JALALI);
 
-  return [datePart, timePart?.slice(0, 5)].filter(Boolean).join(' · ');
+  return [formattedDate, timePart?.slice(0, 5)].filter(Boolean).join(' · ');
 };
 
 export const buildConvertInitialForm = (row) => {

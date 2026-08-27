@@ -1,4 +1,4 @@
-import { Select, SegmentedControl } from '../../../shared/components';
+import { Select, SegmentedControl, Filters } from '../../../shared/components';
 import {
   DEBT_TABS,
   DEBT_GROUP_BY_OPTIONS,
@@ -31,7 +31,7 @@ export const DebtFilters = ({
 
   return (
     <div className="debts-filters">
-      <div className="debts-filters__row">
+      <Filters>
         <Select
           label="Bank"
           disabled={optionsLoading}
@@ -47,7 +47,7 @@ export const DebtFilters = ({
           value={filters.unitId}
           onChange={(e) => setFilter('unitId', e.target.value)}
         />
-      </div>
+      </Filters>
 
       {tab === DEBT_TABS.SUMMARY ? (
         <SegmentedControl

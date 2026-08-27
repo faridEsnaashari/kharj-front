@@ -11,12 +11,6 @@
   color: var(--color-text);
 }
 
-.inbox-filters {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-}
-
 .inbox__error {
   margin: 0;
   padding: var(--space-3) var(--space-4);

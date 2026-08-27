@@ -1,4 +1,4 @@
-import { Select } from '../../../shared/components';
+import { Select, Filters } from '../../../shared/components';
 
 const ALL_OPTION = { value: '', label: 'All' };
 
@@ -16,7 +16,7 @@ export const AccountFilters = ({
   setFilter,
 }) => {
   return (
-    <div className="accounts-filters">
+    <Filters>
       <Select
         label="Bank"
         disabled={optionsLoading}
@@ -40,6 +40,6 @@ export const AccountFilters = ({
         value={filters.ownedBy}
         onChange={(e) => setFilter('ownedBy', e.target.value)}
       />
-    </div>
+    </Filters>
   );
 };

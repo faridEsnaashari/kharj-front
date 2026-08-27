@@ -34,6 +34,7 @@ export const TransactionRow = ({ transaction }) => {
           </span>
           <Amount
             value={getSignedTransactionAmount(transaction)}
+            unit={transaction.account?.unit}
             fractionDigits={0}
           />
         </div>

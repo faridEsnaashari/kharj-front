@@ -39,6 +39,8 @@ export const useInboxPage = () => {
   const [uploadOpen, setUploadOpen] = useState(false);
   const [uploadBankId, setUploadBankId] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
+  const [uploadedFileName, setUploadedFileName] = useState(null);
+  const [fileUploading, setFileUploading] = useState(false);
   const [uploading, setUploading] = useState(false);
 
   const [textOpen, setTextOpen] = useState(false);
@@ -126,11 +128,34 @@ export const useInboxPage = () => {
   const openUpload = useCallback(() => {
     setUploadBankId('');
     setSelectedFile(null);
+    setUploadedFileName(null);
     setUploadOpen(true);
   }, []);
 
   const closeUpload = useCallback(() => {
     setUploadOpen(false);
+  }, []);
+
+  const handleFileSelect = useCallback(async (file) => {
+    setSelectedFile(file);
+    setUploadedFileName(null);
+    setError(null);
+
+    if (!file) {
+      return;
+    }
+
+    setFileUploading(true);
+
+    try {
+      const uploadedFile = await uploadBankFile(file);
+      setUploadedFileName(uploadedFile);
+    } catch (err) {
+      setError(getErrorMessage(err, 'Failed to upload file'));
+      setSelectedFile(null);
+    } finally {
+      setFileUploading(false);
+    }
   }, []);
 
   const openText = useCallback(() => {
@@ -144,7 +169,7 @@ export const useInboxPage = () => {
   }, []);
 
   const handleUploadImport = useCallback(async () => {
-    if (!uploadBankId || !selectedFile) {
+    if (!uploadBankId || !uploadedFileName) {
       setError('Pick a bank and a file first.');
       return;
     }
@@ -154,8 +179,10 @@ export const useInboxPage = () => {
     setNotice(null);
 
     try {
-      const uploadedFile = await uploadBankFile(selectedFile);
-      await importBankExport({ bankId: uploadBankId, uploadedFile });
+      await importBankExport({
+        bankId: uploadBankId,
+        uploadedFile: uploadedFileName,
+      });
       setNotice('File imported.');
       setUploadOpen(false);
       reloadPending();
@@ -164,7 +191,7 @@ export const useInboxPage = () => {
     } finally {
       setUploading(false);
     }
-  }, [uploadBankId, selectedFile, reloadPending]);
+  }, [uploadBankId, uploadedFileName, reloadPending]);
 
   const handleTextImport = useCallback(async () => {
     if (!textBankId || !text) {
@@ -286,7 +313,9 @@ export const useInboxPage = () => {
     uploadBankId,
     setUploadBankId,
     selectedFile,
-    setSelectedFile,
+    onFileSelect: handleFileSelect,
+    uploadedFileName,
+    fileUploading,
     uploading,
     handleUploadImport,
     textOpen,

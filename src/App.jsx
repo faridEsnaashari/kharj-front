@@ -36,9 +36,11 @@ const NAV_TABS = [
   { key: 'inbox', label: 'Inbox', icon: IconUpload, path: '/inbox' },
 ];
 
+const ROUTER_BASENAME = import.meta.env.PROD ? '/front' : '/';
+
 function AuthenticatedShell({ onLogout }) {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={ROUTER_BASENAME}>
       <div
         className="app-root"
         style={{ background: 'var(--color-bg)', minHeight: '100dvh' }}

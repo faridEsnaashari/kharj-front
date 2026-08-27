@@ -21,7 +21,12 @@ export const AccountRow = ({ account, onClick }) => {
       trailing={
         <div className="accounts-row__trailing">
           <Badge tone="neutral">P{account.priority}</Badge>
-          <Amount value={account.ballance} tone="neutral" fractionDigits={0} />
+          <Amount
+            value={account.ballance}
+            unit={account.unit}
+            tone="neutral"
+            fractionDigits={0}
+          />
         </div>
       }
     />

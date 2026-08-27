@@ -41,7 +41,11 @@ export const PendingImportRow = ({ row, onOpen, onDelete }) => {
         trailing={
           <div className="inbox-row__trailing">
             <Badge tone="neutral">{row.source}</Badge>
-            <Amount value={getSignedPendingAmount(row)} fractionDigits={0} />
+            <Amount
+              value={getSignedPendingAmount(row)}
+              unit={row.account?.unit}
+              fractionDigits={0}
+            />
           </div>
         }
       />

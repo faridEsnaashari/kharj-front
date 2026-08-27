@@ -45,6 +45,7 @@ export const AccountDetailsModal = ({ accountId, onClose }) => {
             </span>
             <Amount
               value={account.ballance}
+              unit={account.unit}
               tone="neutral"
               size="lg"
               fractionDigits={0}

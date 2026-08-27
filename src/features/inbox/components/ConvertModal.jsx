@@ -61,6 +61,7 @@ export const ConvertModal = ({
         <div className="inbox-modal__amount">
           <Amount
             value={getSignedPendingAmount(row)}
+            unit={row.account?.unit}
             size="lg"
             fractionDigits={0}
           />

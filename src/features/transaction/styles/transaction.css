@@ -59,8 +59,3 @@
   gap: var(--space-3);
 }
 
-.transactions-filters__selects {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-3);
-}
