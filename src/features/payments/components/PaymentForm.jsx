@@ -9,10 +9,14 @@ import {
   Button,
   Amount,
   CALENDARS,
+  getAmountHint,
 } from '../../../shared/components';
 
 const toOptions = (items) =>
   items.map((item) => ({ value: item.id, label: item.name }));
+
+const findUnit = (units, unitId) =>
+  units.find((unit) => String(unit.id) === String(unitId));
 
 export const PaymentForm = ({
   banks,
@@ -26,6 +30,8 @@ export const PaymentForm = ({
   submitting,
   onSubmit,
 }) => {
+  const selectedUnit = findUnit(units, form.unitId);
+
   return (
     <Form onSubmit={onSubmit} className="payment-form">
       <Select
@@ -61,7 +67,12 @@ export const PaymentForm = ({
       <div className="payment-form__balance">
         <span className="payment-form__balance-label">Available balance</span>
         {accountBalance !== null ? (
-          <Amount value={accountBalance} tone="neutral" fractionDigits={0} />
+          <Amount
+            value={accountBalance}
+            unit={selectedUnit}
+            tone="neutral"
+            fractionDigits={0}
+          />
         ) : (
           <span className="payment-form__balance-placeholder">—</span>
         )}
@@ -82,6 +93,7 @@ export const PaymentForm = ({
         type="number"
         required
         min="0"
+        hint={getAmountHint(form.price, selectedUnit)}
         value={form.price}
         onChange={(e) => setField('price', e.target.value)}
       />

@@ -16,7 +16,10 @@ export const DebtSummaryRow = ({ row, currentUserId }) => {
       subtitle={getSummaryRowUnitLabel(row)}
       trailing={
         <div className="debts-row__trailing">
-          <Amount value={getSignedDebtAmount(row, currentUserId)} />
+          <Amount
+            value={getSignedDebtAmount(row, currentUserId)}
+            unit={row.unit}
+          />
           <span className="debts-row__direction">
             {getDebtDirectionLabel(row, currentUserId)}
           </span>

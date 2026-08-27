@@ -35,12 +35,6 @@
   text-align: center;
 }
 
-.accounts-filters {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-3);
-}
-
 .accounts-row__trailing {
   display: flex;
   flex-direction: column;

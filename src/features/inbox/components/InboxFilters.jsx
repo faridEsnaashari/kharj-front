@@ -1,4 +1,4 @@
-import { Select } from '../../../shared/components';
+import { Select, Filters } from '../../../shared/components';
 
 const ALL_OPTION = { value: '', label: 'All' };
 
@@ -9,7 +9,7 @@ const toFilterOptions = (items) => [
 
 export const InboxFilters = ({ banks, optionsLoading, bankId, setBankId }) => {
   return (
-    <div className="inbox-filters">
+    <Filters>
       <Select
         label="Bank"
         disabled={optionsLoading}
@@ -17,6 +17,6 @@ export const InboxFilters = ({ banks, optionsLoading, bankId, setBankId }) => {
         value={bankId}
         onChange={(e) => setBankId(e.target.value)}
       />
-    </div>
+    </Filters>
   );
 };

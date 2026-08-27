@@ -14,6 +14,7 @@ export const UnitCard = ({ unit, total, weeklyIncome, weeklyPayment }) => {
         <Amount
           className="dashboard-unit-card__total"
           value={total}
+          unit={unit}
           tone="neutral"
           size="lg"
           fractionDigits={0}
@@ -22,11 +23,21 @@ export const UnitCard = ({ unit, total, weeklyIncome, weeklyPayment }) => {
         <div className="dashboard-unit-card__weekly">
           <div className="dashboard-unit-card__weekly-item">
             <span className="dashboard-unit-card__weekly-label">Income</span>
-            <Amount value={weeklyIncome} size="sm" fractionDigits={0} />
+            <Amount
+              value={weeklyIncome}
+              unit={unit}
+              size="sm"
+              fractionDigits={0}
+            />
           </div>
           <div className="dashboard-unit-card__weekly-item">
             <span className="dashboard-unit-card__weekly-label">Payment</span>
-            <Amount value={-weeklyPayment} size="sm" fractionDigits={0} />
+            <Amount
+              value={-weeklyPayment}
+              unit={unit}
+              size="sm"
+              fractionDigits={0}
+            />
           </div>
         </div>
       </CardBody>

@@ -9,16 +9,20 @@ import {
   Button,
   Amount,
   CALENDARS,
+  getAmountHint,
 } from '../../../shared/components';
 
 const toOptions = (items) =>
   items.map((item) => ({ value: item.id, label: item.name }));
 
-const BalanceRow = ({ label, balance }) => (
+const findUnit = (units, unitId) =>
+  units.find((unit) => String(unit.id) === String(unitId));
+
+const BalanceRow = ({ label, balance, unit }) => (
   <div className="exchange-form__balance">
     <span className="exchange-form__balance-label">{label}</span>
     {balance !== null ? (
-      <Amount value={balance} tone="neutral" fractionDigits={0} />
+      <Amount value={balance} unit={unit} tone="neutral" fractionDigits={0} />
     ) : (
       <span className="exchange-form__balance-placeholder">—</span>
     )}
@@ -40,6 +44,9 @@ export const ExchangeForm = ({
   submitting,
   onSubmit,
 }) => {
+  const fromUnit = findUnit(units, form.fromUnitId);
+  const toUnit = findUnit(toUnits, form.toUnitId);
+
   return (
     <Form onSubmit={onSubmit} className="exchange-form">
       <Section title="From">
@@ -73,13 +80,18 @@ export const ExchangeForm = ({
           onChange={(e) => setField('fromOwnerId', e.target.value)}
         />
 
-        <BalanceRow label="Available balance" balance={fromBalance} />
+        <BalanceRow
+          label="Available balance"
+          balance={fromBalance}
+          unit={fromUnit}
+        />
 
         <Input
           label="Amount"
           type="number"
           required
           min="0"
+          hint={getAmountHint(form.fromAmount, fromUnit)}
           value={form.fromAmount}
           onChange={(e) => setField('fromAmount', e.target.value)}
         />
@@ -126,13 +138,18 @@ export const ExchangeForm = ({
           onChange={(e) => setField('toOwnerId', e.target.value)}
         />
 
-        <BalanceRow label="Available balance" balance={toBalance} />
+        <BalanceRow
+          label="Available balance"
+          balance={toBalance}
+          unit={toUnit}
+        />
 
         <Input
           label="Amount"
           type="number"
           required
           min="0"
+          hint={getAmountHint(form.toAmount, toUnit)}
           value={form.toAmount}
           onChange={(e) => setField('toAmount', e.target.value)}
         />

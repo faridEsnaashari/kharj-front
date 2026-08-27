@@ -76,11 +76,6 @@
   gap: var(--space-3);
 }
 
-.debts-filters__row {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-3);
-}
 
 .debts-row__trailing {
   display: flex;

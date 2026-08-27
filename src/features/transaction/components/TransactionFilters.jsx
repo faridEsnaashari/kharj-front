@@ -1,4 +1,4 @@
-import { Select, ChipGroup } from '../../../shared/components';
+import { Select, ChipGroup, Filters } from '../../../shared/components';
 import { ACTIVITY_FILTERS } from '../logic/transaction.logic.js';
 
 const ALL_OPTION = { value: '', label: 'All' };
@@ -30,7 +30,7 @@ export const TransactionFilters = ({
         onChange={(value) => setFilter('type', value)}
       />
 
-      <div className="transactions-filters__selects">
+      <Filters>
         <Select
           label="Bank"
           disabled={optionsLoading}
@@ -54,7 +54,7 @@ export const TransactionFilters = ({
           value={filters.ownedBy}
           onChange={(e) => setFilter('ownedBy', e.target.value)}
         />
-      </div>
+      </Filters>
     </div>
   );
 };

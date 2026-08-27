@@ -383,8 +383,19 @@
 
 .ui-form__row {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: var(--space-3);
+}
+
+.ui-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.ui-filters > * {
+  flex: 1 1 120px;
+  min-width: 120px;
 }
 
 .ui-datefield {

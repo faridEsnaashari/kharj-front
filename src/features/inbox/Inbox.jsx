@@ -28,7 +28,9 @@ export const Inbox = () => {
     uploadBankId,
     setUploadBankId,
     selectedFile,
-    setSelectedFile,
+    onFileSelect,
+    uploadedFileName,
+    fileUploading,
     uploading,
     handleUploadImport,
     textOpen,
@@ -114,7 +116,9 @@ export const Inbox = () => {
           bankId={uploadBankId}
           setBankId={setUploadBankId}
           file={selectedFile}
-          setFile={setSelectedFile}
+          onFileSelect={onFileSelect}
+          uploadedFileName={uploadedFileName}
+          fileUploading={fileUploading}
           uploading={uploading}
           onSubmit={handleUploadImport}
           onClose={closeUpload}

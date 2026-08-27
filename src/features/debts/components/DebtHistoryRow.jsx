@@ -17,7 +17,12 @@ export const DebtHistoryRow = ({ row, currentUserId }) => {
       subtitle={[getHistoryRowUnitLabel(row), getHistoryRowDateLabel(row)]
         .filter(Boolean)
         .join(' · ')}
-      trailing={<Amount value={getSignedDebtAmount(row, currentUserId)} />}
+      trailing={
+        <Amount
+          value={getSignedDebtAmount(row, currentUserId)}
+          unit={row.payment?.account?.unit}
+        />
+      }
     />
   );
 };

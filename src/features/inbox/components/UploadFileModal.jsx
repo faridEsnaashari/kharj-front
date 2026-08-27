@@ -17,7 +17,9 @@ export const UploadFileModal = ({
   bankId,
   setBankId,
   file,
-  setFile,
+  onFileSelect,
+  uploadedFileName,
+  fileUploading,
   uploading,
   onSubmit,
   onClose,
@@ -49,14 +51,22 @@ export const UploadFileModal = ({
           <input
             type="file"
             accept=".xlsx,.xls"
-            onChange={(e) => setFile(e.target.files?.[0] || null)}
+            disabled={fileUploading}
+            onChange={(e) => onFileSelect(e.target.files?.[0] || null)}
           />
-          <span>{file ? file.name : 'Choose a file'}</span>
+          <span>
+            {file
+              ? fileUploading
+                ? `Uploading ${file.name}…`
+                : file.name
+              : 'Choose a file'}
+          </span>
         </label>
 
         <Button
           variant="primary"
           fullWidth
+          disabled={!bankId || !uploadedFileName || fileUploading}
           loading={uploading}
           iconLeft={<IconUpload size={18} />}
           onClick={onSubmit}
