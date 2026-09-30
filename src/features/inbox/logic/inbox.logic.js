@@ -66,3 +66,41 @@ export const buildConvertPayload = (row, form, resolvedAccountId) => {
     uncompletePaymentId: row.id,
   };
 };
+
+export const buildExchangeInitialForm = (row) => {
+  const [datePart, timePart] = (row.paidAt || '').split(/[T ]/);
+
+  return {
+    toUserId: '',
+    toBankId: '',
+    toUnitId: '',
+    toOwnerId: '',
+    toAmount: '',
+    date: datePart || '',
+    time: timePart ? timePart.slice(0, 5) : '',
+  };
+};
+
+const EXCHANGE_REQUIRED_FIELDS = [
+  'toUserId',
+  'toBankId',
+  'toUnitId',
+  'toOwnerId',
+  'toAmount',
+  'date',
+];
+
+export const isExchangeConvertFormValid = (form) =>
+  EXCHANGE_REQUIRED_FIELDS.every(
+    (field) => form[field] !== '' && form[field] != null,
+  );
+
+export const buildExchangeConvertPayload = (row, form, toAccountId) => ({
+  fromAccountId: row.accountId,
+  toAccountId: Number(toAccountId),
+  fromAmount: row.amount,
+  toAmount: Number(form.toAmount),
+  toUser: Number(form.toUserId),
+  paidAt: `${form.date} ${form.time || '00:00'}:00`,
+  uncompletePaymentId: row.id,
+});

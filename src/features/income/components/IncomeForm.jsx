@@ -3,6 +3,7 @@ import {
   FormRow,
   Select,
   Input,
+  AmountInput,
   Textarea,
   DateField,
   TimeField,
@@ -88,14 +89,12 @@ export const IncomeForm = ({
         onChange={(e) => setField('category', e.target.value)}
       />
 
-      <Input
+      <AmountInput
         label="Amount"
-        type="number"
         required
-        min="0"
         hint={getAmountHint(form.amount, selectedUnit)}
         value={form.amount}
-        onChange={(e) => setField('amount', e.target.value)}
+        onChange={(value) => setField('amount', value)}
       />
 
       <FormRow>

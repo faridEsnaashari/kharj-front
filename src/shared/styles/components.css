@@ -695,6 +695,20 @@
   color: var(--color-text);
 }
 
+.ui-amount-wrap {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.ui-amount__exact {
+  font-family: var(--font-family-numeric);
+  font-size: var(--font-size-xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-muted);
+}
+
 .ui-amount__arrow {
   display: inline-flex;
   align-items: center;

@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import {
   Select,
   Input,
+  AmountInput,
   Button,
   IconButton,
   IconX,
@@ -65,12 +66,12 @@ export const CreateAccountModal = ({
           onChange={(e) => setField('ownerId', e.target.value)}
         />
 
-        <Input
+        <AmountInput
           label="Initial Balance"
-          type="number"
           required
+          allowNegative
           value={form.ballance}
-          onChange={(e) => setField('ballance', e.target.value)}
+          onChange={(value) => setField('ballance', value)}
         />
 
         <Input

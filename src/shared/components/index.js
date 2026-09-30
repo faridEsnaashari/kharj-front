@@ -3,6 +3,7 @@ export { Spinner } from './Spinner.jsx';
 export { Field } from './Field.jsx';
 export {
   Input,
+  AmountInput,
   PasswordInput,
   Textarea,
   Select,
