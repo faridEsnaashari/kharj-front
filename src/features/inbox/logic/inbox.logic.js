@@ -71,6 +71,10 @@ export const buildExchangeInitialForm = (row) => {
   const [datePart, timePart] = (row.paidAt || '').split(/[T ]/);
 
   return {
+    fromBankId: row.account?.bankId ? String(row.account.bankId) : '',
+    fromUnitId: row.account?.unitId ? String(row.account.unitId) : '',
+    fromOwnerId: row.account?.ownedBy ? String(row.account.ownedBy) : '',
+    fromAmount: String(row.amount),
     toUserId: '',
     toBankId: '',
     toUnitId: '',
@@ -82,6 +86,10 @@ export const buildExchangeInitialForm = (row) => {
 };
 
 const EXCHANGE_REQUIRED_FIELDS = [
+  'fromBankId',
+  'fromUnitId',
+  'fromOwnerId',
+  'fromAmount',
   'toUserId',
   'toBankId',
   'toUnitId',
@@ -95,10 +103,15 @@ export const isExchangeConvertFormValid = (form) =>
     (field) => form[field] !== '' && form[field] != null,
   );
 
-export const buildExchangeConvertPayload = (row, form, toAccountId) => ({
-  fromAccountId: row.accountId,
+export const buildExchangeConvertPayload = (
+  row,
+  form,
+  fromAccountId,
+  toAccountId,
+) => ({
+  fromAccountId: Number(fromAccountId),
   toAccountId: Number(toAccountId),
-  fromAmount: row.amount,
+  fromAmount: Number(form.fromAmount),
   toAmount: Number(form.toAmount),
   toUser: Number(form.toUserId),
   paidAt: `${form.date} ${form.time || '00:00'}:00`,
