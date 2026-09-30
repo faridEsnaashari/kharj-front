@@ -10,6 +10,7 @@ import { ImportTriggers } from './components/ImportTriggers';
 import { UploadFileModal } from './components/UploadFileModal';
 import { TextImportModal } from './components/TextImportModal';
 import { PendingImportRow } from './components/PendingImportRow';
+import { ExchangeModal } from './components/ExchangeModal';
 import { ConvertModal } from './components/ConvertModal';
 import './styles/inbox.css';
 
@@ -55,6 +56,7 @@ export const Inbox = () => {
     setConvertField,
     converting,
     handleConvertSubmit,
+    exchange,
     handleDelete,
     notice,
     error,
@@ -95,6 +97,7 @@ export const Inbox = () => {
                   key={row.id}
                   row={row}
                   onOpen={openConvert}
+                  onExchange={exchange.open}
                   onDelete={handleDelete}
                 />
               ))
@@ -150,6 +153,22 @@ export const Inbox = () => {
           submitting={converting}
           onSubmit={handleConvertSubmit}
           onClose={closeConvert}
+        />
+      ) : null}
+
+      {exchange.row && exchange.form ? (
+        <ExchangeModal
+          row={exchange.row}
+          relatedUsers={relatedUsers}
+          toBanks={exchange.toBanks}
+          toUnits={exchange.toUnits}
+          toBalance={exchange.toBalance}
+          form={exchange.form}
+          setField={exchange.setField}
+          setToUserId={exchange.setToUserId}
+          submitting={exchange.submitting}
+          onSubmit={exchange.submit}
+          onClose={exchange.close}
         />
       ) : null}
     </div>

@@ -1,8 +1,9 @@
 import { cx } from '../utils/index.js';
 import { IconArrowDownLeft, IconArrowUpRight } from './icons.jsx';
-import { toDisplayAmount } from '../lib/currency.js';
+import { toDisplayAmount, isRialUnit } from '../lib/currency.js';
 
 const formatters = new Map();
+const exactFormatter = new Intl.NumberFormat();
 
 const formatterFor = (fractionDigits) => {
   if (!formatters.has(fractionDigits)) {
@@ -26,6 +27,7 @@ export const Amount = ({
   size = 'md',
   showSign = true,
   showArrow = true,
+  showExact = true,
   fractionDigits = 2,
   className,
 }) => {
@@ -37,7 +39,7 @@ export const Amount = ({
   const directional = tone === 'auto' && direction !== 'zero';
   const sign = numeric > 0 ? '+' : '−';
 
-  return (
+  const amount = (
     <span
       className={cx(
         'ui-amount',
@@ -62,6 +64,19 @@ export const Amount = ({
         {currency ? (
           <span className="ui-amount__currency">{currency}</span>
         ) : null}
+      </span>
+    </span>
+  );
+
+  if (!showExact || !isRialUnit(unit)) {
+    return amount;
+  }
+
+  return (
+    <span className="ui-amount-wrap">
+      {amount}
+      <span className="ui-amount__exact">
+        {exactFormatter.format(Math.abs(Number(value) || 0))}
       </span>
     </span>
   );

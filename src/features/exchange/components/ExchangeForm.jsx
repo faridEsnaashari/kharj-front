@@ -4,6 +4,7 @@ import {
   Section,
   Select,
   Input,
+  AmountInput,
   DateField,
   TimeField,
   Button,
@@ -86,14 +87,12 @@ export const ExchangeForm = ({
           unit={fromUnit}
         />
 
-        <Input
+        <AmountInput
           label="Amount"
-          type="number"
           required
-          min="0"
           hint={getAmountHint(form.fromAmount, fromUnit)}
           value={form.fromAmount}
-          onChange={(e) => setField('fromAmount', e.target.value)}
+          onChange={(value) => setField('fromAmount', value)}
         />
       </Section>
 
@@ -144,14 +143,12 @@ export const ExchangeForm = ({
           unit={toUnit}
         />
 
-        <Input
+        <AmountInput
           label="Amount"
-          type="number"
           required
-          min="0"
           hint={getAmountHint(form.toAmount, toUnit)}
           value={form.toAmount}
-          onChange={(e) => setField('toAmount', e.target.value)}
+          onChange={(value) => setField('toAmount', value)}
         />
       </Section>
 

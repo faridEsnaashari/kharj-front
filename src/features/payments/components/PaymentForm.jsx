@@ -3,6 +3,7 @@ import {
   FormRow,
   Select,
   Input,
+  AmountInput,
   Textarea,
   DateField,
   TimeField,
@@ -88,14 +89,12 @@ export const PaymentForm = ({
         onChange={(e) => setField('category', e.target.value)}
       />
 
-      <Input
+      <AmountInput
         label="Price"
-        type="number"
         required
-        min="0"
         hint={getAmountHint(form.price, selectedUnit)}
         value={form.price}
-        onChange={(e) => setField('price', e.target.value)}
+        onChange={(value) => setField('price', value)}
       />
 
       <FormRow>

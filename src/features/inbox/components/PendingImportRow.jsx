@@ -17,7 +17,7 @@ import {
   getPendingOwnerName,
 } from '../logic/inbox.logic';
 
-export const PendingImportRow = ({ row, onOpen, onDelete }) => {
+export const PendingImportRow = ({ row, onOpen, onExchange, onDelete }) => {
   const isIncome = isPendingIncome(row);
   const subtitle = [
     row.description,
@@ -54,6 +54,11 @@ export const PendingImportRow = ({ row, onOpen, onDelete }) => {
         <Button variant="secondary" size="sm" onClick={() => onOpen(row)}>
           Convert
         </Button>
+        {isIncome ? null : (
+          <Button variant="secondary" size="sm" onClick={() => onExchange(row)}>
+            Exchange
+          </Button>
+        )}
         <IconButton label="Discard" onClick={() => onDelete(row.id)}>
           <IconX size={16} />
         </IconButton>

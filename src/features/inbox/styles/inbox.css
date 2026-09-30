@@ -195,3 +195,7 @@
   display: flex;
   gap: var(--space-3);
 }
+
+.inbox-modal__amount .ui-amount-wrap {
+  align-items: flex-start;
+}

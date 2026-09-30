@@ -28,6 +28,40 @@ export const Input = (props) => {
   );
 };
 
+const sanitizeAmount = (text) => {
+  const negative = text.trim().startsWith('-');
+  const cleaned = text.replace(/[^\d.]/g, '');
+  const [integer, ...fraction] = cleaned.split('.');
+  const joined = fraction.length ? `${integer}.${fraction.join('')}` : integer;
+
+  return negative ? `-${joined}` : joined;
+};
+
+const formatAmount = (raw) => {
+  const value = String(raw ?? '');
+  const negative = value.startsWith('-');
+  const [integer, fraction] = value.replace('-', '').split('.');
+  const grouped = integer.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  const withFraction =
+    fraction === undefined ? grouped : `${grouped}.${fraction}`;
+
+  return negative ? `-${withFraction}` : withFraction;
+};
+
+export const AmountInput = ({ value, onChange, allowNegative, ...rest }) => (
+  <Input
+    type="text"
+    inputMode="decimal"
+    autoComplete="off"
+    value={formatAmount(value)}
+    onChange={(e) => {
+      const raw = sanitizeAmount(e.target.value);
+      onChange(allowNegative ? raw : raw.replace('-', ''));
+    }}
+    {...rest}
+  />
+);
+
 export const PasswordInput = ({ label = 'Password', ...rest }) => {
   const [revealed, setRevealed] = useState(false);
 

@@ -14,6 +14,7 @@ import {
   getPaymentCategories,
 } from '../../payments/api/payment.api';
 import { createIncome, getIncomeCategories } from '../../income/api/income.api';
+import { useInboxExchange } from './useInboxExchange';
 import { usePaginatedList } from '../../../shared/hooks/usePaginatedList';
 import { categoriesToOptions } from '../../../shared/lib/categories';
 import {
@@ -284,6 +285,13 @@ export const useInboxPage = () => {
     }
   }, [activeRow, convertForm, closeConvert, reloadPending]);
 
+  const exchange = useInboxExchange({
+    relatedUsers,
+    onDone: reloadPending,
+    onError: setError,
+    onNotice: setNotice,
+  });
+
   const handleDelete = useCallback(
     async (id) => {
       setError(null);
@@ -340,6 +348,7 @@ export const useInboxPage = () => {
     setConvertField,
     converting,
     handleConvertSubmit,
+    exchange,
     handleDelete,
     notice,
     error,
