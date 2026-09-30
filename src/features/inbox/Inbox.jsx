@@ -159,7 +159,10 @@ export const Inbox = () => {
       {exchange.row && exchange.form ? (
         <ExchangeModal
           row={exchange.row}
+          banks={banks}
+          units={exchange.units}
           relatedUsers={relatedUsers}
+          fromBalance={exchange.fromBalance}
           toBanks={exchange.toBanks}
           toUnits={exchange.toUnits}
           toBalance={exchange.toBalance}

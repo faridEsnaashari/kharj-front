@@ -14,14 +14,16 @@ import {
   getAmountHint,
   useDismiss,
 } from '../../../shared/components';
-import { getPendingAccountLabel } from '../logic/inbox.logic';
 
 const toOptions = (items) =>
   items.map((item) => ({ value: item.id, label: item.name }));
 
 export const ExchangeModal = ({
   row,
+  banks,
+  units,
   relatedUsers,
+  fromBalance,
   toBanks,
   toUnits,
   toBalance,
@@ -35,6 +37,7 @@ export const ExchangeModal = ({
   const containerRef = useRef(null);
   useDismiss(containerRef, true, onClose);
 
+  const fromUnit = units.find((unit) => String(unit.id) === form.fromUnitId);
   const toUnit = toUnits.find((unit) => String(unit.id) === form.toUnitId);
 
   return (
@@ -56,22 +59,52 @@ export const ExchangeModal = ({
           </p>
         </div>
 
-        <div className="inbox-modal__account">
-          <span className="inbox-modal__account-label">From</span>
-          <span className="inbox-modal__account-value">
-            {getPendingAccountLabel(row)}
-            {row.account?.owner?.name ? ` · ${row.account.owner.name}` : ''}
-          </span>
-        </div>
+        <Select
+          label="From Bank"
+          placeholder="Select a bank"
+          required
+          options={toOptions(banks)}
+          value={form.fromBankId}
+          onChange={(e) => setField('fromBankId', e.target.value)}
+        />
 
-        <div className="inbox-modal__amount">
-          <Amount
-            value={-row.amount}
-            unit={row.account?.unit}
-            size="lg"
-            fractionDigits={0}
-          />
-        </div>
+        <Select
+          label="From Unit"
+          placeholder="Select a unit"
+          required
+          options={toOptions(units)}
+          value={form.fromUnitId}
+          onChange={(e) => setField('fromUnitId', e.target.value)}
+        />
+
+        <Select
+          label="From Owner"
+          placeholder="Select an owner"
+          required
+          options={toOptions(relatedUsers)}
+          value={form.fromOwnerId}
+          onChange={(e) => setField('fromOwnerId', e.target.value)}
+        />
+
+        {fromBalance !== null ? (
+          <div className="inbox-modal__account">
+            <span className="inbox-modal__account-label">Balance</span>
+            <Amount
+              value={fromBalance}
+              unit={fromUnit}
+              tone="neutral"
+              fractionDigits={0}
+            />
+          </div>
+        ) : null}
+
+        <AmountInput
+          label="From Amount"
+          required
+          hint={getAmountHint(form.fromAmount, fromUnit)}
+          value={form.fromAmount}
+          onChange={(value) => setField('fromAmount', value)}
+        />
 
         <Select
           label="To Book"

@@ -18,6 +18,8 @@ export const useInboxExchange = ({
   onNotice,
   relatedUsers,
 }) => {
+  const [units, setUnits] = useState([]);
+  const [fromAccount, setFromAccount] = useState(null);
   const [row, setRow] = useState(null);
   const [form, setForm] = useState(null);
   const [toBanks, setToBanks] = useState([]);
@@ -43,6 +45,7 @@ export const useInboxExchange = ({
     setToBanks([]);
     setToUnits([]);
     setToAccount(null);
+    setFromAccount(null);
   }, []);
 
   const setField = useCallback((field, value) => {
@@ -59,10 +62,66 @@ export const useInboxExchange = ({
     }));
   }, []);
 
+  const isOpen = Boolean(row);
+  const fromBankId = form?.fromBankId;
+  const fromUnitId = form?.fromUnitId;
+  const fromOwnerId = form?.fromOwnerId;
   const toUserId = form?.toUserId;
   const toBankId = form?.toBankId;
   const toUnitId = form?.toUnitId;
   const toOwnerId = form?.toOwnerId;
+
+  useEffect(() => {
+    if (!isOpen) {
+      return undefined;
+    }
+
+    let cancelled = false;
+
+    getUnits()
+      .then((unitsData) => {
+        if (!cancelled) {
+          setUnits(unitsData || []);
+        }
+      })
+      .catch((err) => {
+        if (!cancelled) {
+          onError(getErrorMessage(err, 'Failed to load units'));
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [isOpen, onError]);
+
+  useEffect(() => {
+    if (!fromBankId || !fromUnitId || !fromOwnerId) {
+      return undefined;
+    }
+
+    let cancelled = false;
+
+    getAccounts({
+      bankId: fromBankId,
+      unitId: fromUnitId,
+      ownedBy: fromOwnerId,
+    })
+      .then((accounts) => {
+        if (!cancelled) {
+          setFromAccount(accounts?.[0] ?? null);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setFromAccount(null);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [fromBankId, fromUnitId, fromOwnerId]);
 
   useEffect(() => {
     if (!toUserId) {
@@ -129,6 +188,11 @@ export const useInboxExchange = ({
       return;
     }
 
+    if (!fromAccount) {
+      onError('No account found for the selected source.');
+      return;
+    }
+
     if (!toAccount) {
       onError('No account found for the selected destination.');
       return;
@@ -139,7 +203,7 @@ export const useInboxExchange = ({
 
     try {
       await createExchange(
-        buildExchangeConvertPayload(row, form, toAccount.id),
+        buildExchangeConvertPayload(row, form, fromAccount.id, toAccount.id),
       );
       onNotice('Exchange recorded.');
       close();
@@ -149,11 +213,16 @@ export const useInboxExchange = ({
     } finally {
       setSubmitting(false);
     }
-  }, [row, form, toAccount, close, onDone, onError, onNotice]);
+  }, [row, form, fromAccount, toAccount, close, onDone, onError, onNotice]);
 
   return {
     row,
     form,
+    units,
+    fromBalance:
+      fromBankId && fromUnitId && fromOwnerId
+        ? (fromAccount?.ballance ?? null)
+        : null,
     toBanks,
     toUnits,
     toBalance:
