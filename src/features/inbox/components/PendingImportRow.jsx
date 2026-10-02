@@ -54,11 +54,9 @@ export const PendingImportRow = ({ row, onOpen, onExchange, onDelete }) => {
         <Button variant="secondary" size="sm" onClick={() => onOpen(row)}>
           Convert
         </Button>
-        {isIncome ? null : (
-          <Button variant="secondary" size="sm" onClick={() => onExchange(row)}>
-            Exchange
-          </Button>
-        )}
+        <Button variant="secondary" size="sm" onClick={() => onExchange(row)}>
+          Exchange
+        </Button>
         <IconButton label="Discard" onClick={() => onDelete(row.id)}>
           <IconX size={16} />
         </IconButton>
